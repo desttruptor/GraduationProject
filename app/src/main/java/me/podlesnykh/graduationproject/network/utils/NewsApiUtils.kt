@@ -1,5 +1,6 @@
 package me.podlesnykh.graduationproject.network.utils
 
+import me.podlesnykh.graduationproject.network.utils.NewsApiUtils.SortBy.PUBLISHED_AT
 import java.net.URLEncoder
 import java.nio.charset.StandardCharsets
 
@@ -28,7 +29,7 @@ object NewsApiUtils {
         val vals = listOf("title", "description", "content")
         val keys = mutableListOf(title, description, content)
         keys.forEachIndexed { index, key ->
-            if(key) {
+            if (key) {
                 sb.append(vals[index])
                 keys[index] = false
                 sb.append(if (keys.contains(true)) "," else "")
