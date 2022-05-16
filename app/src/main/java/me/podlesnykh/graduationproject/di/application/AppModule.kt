@@ -8,6 +8,7 @@ import me.podlesnykh.graduationproject.R
 import me.podlesnykh.graduationproject.network.Constants
 import me.podlesnykh.graduationproject.network.Constants.TAG_REQUEST_LOG
 import me.podlesnykh.graduationproject.network.Constants.TAG_RESPONSE_LOG
+import me.podlesnykh.graduationproject.network.NewsApi
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -45,4 +46,8 @@ class AppModule(private val application: Application) {
         .addConverterFactory(GsonConverterFactory.create())
         .client(client)
         .build()
+
+    @Provides
+    @ApplicationScope
+    fun provideNewsApi(retrofit: Retrofit): NewsApi = retrofit.create(NewsApi::class.java)
 }

@@ -8,7 +8,6 @@ import retrofit2.http.Header
 import retrofit2.http.Query
 
 interface NewsApi {
-    // TODO: написать конвертеры для всего этого говна в стрингу
     @GET("/v2/everything")
     suspend fun getEverything(
         @Query("q") keyword: String,
@@ -26,8 +25,11 @@ interface NewsApi {
 
     @GET("/v2/top-headlines")
     suspend fun getTopHeadlines(
+        // DO NOT MIX WITH THE SOURCES
         @Query("country") country: String,
+        // DO NOT MIX WITH THE SOURCES
         @Query("category") category: String,
+        // DO NOT MIX WITH THE COUNTRY & CATEGORY
         @Query("sources") sources: String,
         @Query("q") q: String,
         @Query("pageSize") pageSize: String,
