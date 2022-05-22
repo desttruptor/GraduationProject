@@ -2,9 +2,12 @@ package me.podlesnykh.graduationproject.di.application
 
 import android.app.Application
 import android.util.Log
+import androidx.room.Room
 import dagger.Module
 import dagger.Provides
 import me.podlesnykh.graduationproject.R
+import me.podlesnykh.graduationproject.database.NewsDao
+import me.podlesnykh.graduationproject.database.NewsDatabase
 import me.podlesnykh.graduationproject.network.Constants
 import me.podlesnykh.graduationproject.network.Constants.TAG_REQUEST_LOG
 import me.podlesnykh.graduationproject.network.Constants.TAG_RESPONSE_LOG
@@ -50,4 +53,17 @@ class AppModule(private val application: Application) {
     @Provides
     @ApplicationScope
     fun provideNewsApi(retrofit: Retrofit): NewsApi = retrofit.create(NewsApi::class.java)
+
+    @Provides
+    @ApplicationScope
+    fun provideRoom(application: Application): NewsDatabase =
+        Room.databaseBuilder(
+            application,
+            NewsDatabase::class.java,
+            "news_database"
+        ).build()
+
+    @Provides
+    @ApplicationScope
+    fun provideNewsDao(database: NewsDatabase): NewsDao = database.newsDao()
 }

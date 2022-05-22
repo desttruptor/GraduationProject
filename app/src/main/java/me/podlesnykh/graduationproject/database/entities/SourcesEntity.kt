@@ -4,7 +4,7 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 @Entity(tableName = "sources")
-class SourceEntity(
+data class SourcesEntity(
     @PrimaryKey(autoGenerate = true) val numberInTable: Int,
     val country: String?,
     val name: String?,
