@@ -6,7 +6,7 @@ import me.podlesnykh.graduationproject.di.application.AppModule
 import me.podlesnykh.graduationproject.di.application.DaggerAppComponent
 
 class GraduationProjectApplication : Application() {
-    private lateinit var appComponent: AppComponent
+    lateinit var appComponent: AppComponent
 
     override fun onCreate() {
         super.onCreate()

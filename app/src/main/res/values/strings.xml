@@ -1,3 +1,6 @@
 <resources>
     <string name="app_name">Graduation Project</string>
+    <string name="watch_full_article">Watch full article</string>
+    <string name="search">Search</string>
+    <string name="search_keywords">Search keywords</string>
 </resources>
