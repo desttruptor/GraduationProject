@@ -3,4 +3,12 @@
     <string name="watch_full_article">Watch full article</string>
     <string name="search">Search</string>
     <string name="search_keywords">Search keywords</string>
+    <string name="domains_comma_separated">Domains, comma-separated:</string>
+    <string name="exclude_domains_comma_separated">Exclude domains, comma-separated:</string>
+    <string name="eg_bbc_co_uk">Eg: bbc.co.uk</string>
+    <string name="sources">Sources:</string>
+    <string name="search_in">Search in:</string>
+    <string name="title">Title</string>
+    <string name="description">Description</string>
+    <string name="content">Content</string>
 </resources>

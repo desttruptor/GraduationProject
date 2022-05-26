@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -28,17 +29,17 @@
             android:layout_height="match_parent">
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/search_queries"
-                android:layout_width="match_parent"
-                android:layout_marginTop="12dp"
-                android:layout_marginStart="16dp"
-                android:layout_marginEnd="16dp"
+                android:id="@+id/search_queries_text_input"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="12dp"
+                android:layout_marginEnd="16dp"
                 android:hint="@string/search_keywords"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
                 app:startIconDrawable="@drawable/ic_baseline_search_24">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -47,32 +48,124 @@
                     android:inputType="text" />
             </com.google.android.material.textfield.TextInputLayout>
 
+            <TextView
+                android:id="@+id/search_in_badge"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:text="@string/search_in"
+                app:layout_constraintStart_toStartOf="@+id/search_queries_text_input"
+                app:layout_constraintTop_toBottomOf="@id/search_queries_text_input" />
+
             <com.google.android.material.chip.ChipGroup
-                app:layout_constraintTop_toBottomOf="@id/search_queries"
-                app:layout_constraintStart_toStartOf="@id/search_queries"
-                app:layout_constraintEnd_toEndOf="@id/search_queries"
+                android:id="@+id/search_in_chip_group"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                app:layout_constraintEnd_toEndOf="@id/search_queries_text_input"
+                app:layout_constraintStart_toStartOf="@id/search_queries_text_input"
+                app:layout_constraintTop_toBottomOf="@id/search_in_badge">
 
                 <com.google.android.material.chip.Chip
-                    android:checkable="true"
                     android:layout_width="wrap_content"
-                    android:text="Title"
-                    android:layout_height="wrap_content"/>
+                    android:layout_height="wrap_content"
+                    android:checkable="true"
+                    android:text="@string/title" />
 
                 <com.google.android.material.chip.Chip
-                    android:checkable="true"
                     android:layout_width="wrap_content"
-                    android:text="Description"
-                    android:layout_height="wrap_content"/>
+                    android:layout_height="wrap_content"
+                    android:checkable="true"
+                    android:text="@string/description" />
 
                 <com.google.android.material.chip.Chip
-                    android:checkable="true"
                     android:layout_width="wrap_content"
-                    android:text="Content"
-                    android:layout_height="wrap_content"/>
+                    android:layout_height="wrap_content"
+                    android:checkable="true"
+                    android:text="@string/content" />
             </com.google.android.material.chip.ChipGroup>
+
+            <TextView
+                android:id="@+id/search_sources_badge"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:text="@string/sources"
+                app:layout_constraintStart_toStartOf="@+id/search_in_chip_group"
+                app:layout_constraintTop_toBottomOf="@id/search_in_chip_group" />
+
+            <com.google.android.material.chip.ChipGroup
+                android:id="@+id/search_sources_chip_group"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintEnd_toEndOf="@id/search_queries_text_input"
+                app:layout_constraintStart_toStartOf="@id/search_queries_text_input"
+                app:layout_constraintTop_toBottomOf="@id/search_sources_badge">
+
+                <com.google.android.material.chip.Chip
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:checkable="true"
+                    tools:text="sample_source" />
+
+            </com.google.android.material.chip.ChipGroup>
+
+            <TextView
+                android:id="@+id/search_domains_badge"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:text="@string/domains_comma_separated"
+                app:layout_constraintStart_toStartOf="@+id/search_sources_chip_group"
+                app:layout_constraintTop_toBottomOf="@id/search_sources_chip_group" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/search_domains_text_input"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:hint="@string/eg_bbc_co_uk"
+                app:layout_constraintEnd_toEndOf="@id/search_domains_badge"
+                app:layout_constraintStart_toStartOf="@id/search_domains_badge"
+                app:layout_constraintTop_toBottomOf="@id/search_domains_badge"
+                app:startIconDrawable="@drawable/ic_baseline_domain_24">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="text" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <TextView
+                android:id="@+id/search_exclude_domains_badge"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="@string/exclude_domains_comma_separated"
+                app:layout_constraintStart_toStartOf="@+id/search_domains_badge"
+                app:layout_constraintTop_toBottomOf="@+id/search_domains_text_input" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/search_exclude_domains_text_input"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:hint="@string/eg_bbc_co_uk"
+                app:layout_constraintEnd_toEndOf="@id/search_exclude_domains_badge"
+                app:layout_constraintStart_toStartOf="@id/search_exclude_domains_badge"
+                app:layout_constraintTop_toBottomOf="@id/search_exclude_domains_badge"
+                app:startIconDrawable="@drawable/ic_baseline_domain_disabled_24">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="text"/>
+            </com.google.android.material.textfield.TextInputLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>
