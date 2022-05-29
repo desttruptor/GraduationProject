@@ -1,4 +1,4 @@
-package me.podlesnykh.graduationproject.database.entities
+package me.podlesnykh.graduationproject.data.database.entities
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey

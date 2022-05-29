@@ -1,7 +1,7 @@
-package me.podlesnykh.graduationproject.network
+package me.podlesnykh.graduationproject.data.network
 
-import me.podlesnykh.graduationproject.network.models.ArticlesResponse
-import me.podlesnykh.graduationproject.network.models.SourcesResponse
+import me.podlesnykh.graduationproject.data.network.models.ArticlesResponse
+import me.podlesnykh.graduationproject.data.network.models.SourcesResponse
 import retrofit2.http.GET
 import retrofit2.http.Query
 

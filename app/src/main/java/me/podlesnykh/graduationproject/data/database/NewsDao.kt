@@ -1,12 +1,11 @@
-package me.podlesnykh.graduationproject.database
+package me.podlesnykh.graduationproject.data.database
 
 import androidx.room.Dao
-import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
-import me.podlesnykh.graduationproject.database.entities.ArticleEntity
-import me.podlesnykh.graduationproject.database.entities.SourcesEntity
-import me.podlesnykh.graduationproject.database.entities.TopHeadlinesEntity
+import me.podlesnykh.graduationproject.data.database.entities.ArticleEntity
+import me.podlesnykh.graduationproject.data.database.entities.SourcesEntity
+import me.podlesnykh.graduationproject.data.database.entities.TopHeadlinesEntity
 
 @Dao
 interface NewsDao {

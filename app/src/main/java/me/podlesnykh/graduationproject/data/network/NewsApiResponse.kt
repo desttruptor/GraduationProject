@@ -1,4 +1,4 @@
-package me.podlesnykh.graduationproject.network
+package me.podlesnykh.graduationproject.data.network
 
 /**
  * Обертка над NewsApi для удобного представления данных

@@ -1,6 +1,6 @@
-package me.podlesnykh.graduationproject.network.utils
+package me.podlesnykh.graduationproject.data.network.utils
 
-import me.podlesnykh.graduationproject.network.utils.NewsApiUtils.SortBy.PUBLISHED_AT
+import me.podlesnykh.graduationproject.data.network.utils.NewsApiUtils.SortBy.PUBLISHED_AT
 import java.net.URLEncoder
 import java.nio.charset.StandardCharsets
 
