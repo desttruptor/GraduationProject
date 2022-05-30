@@ -12,6 +12,8 @@ import me.podlesnykh.graduationproject.data.network.Constants
 import me.podlesnykh.graduationproject.data.network.Constants.TAG_REQUEST_LOG
 import me.podlesnykh.graduationproject.data.network.Constants.TAG_RESPONSE_LOG
 import me.podlesnykh.graduationproject.data.network.NewsApi
+import me.podlesnykh.graduationproject.data.repository.NewsRepository
+import me.podlesnykh.graduationproject.data.repository.NewsRepositoryImpl
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -66,4 +68,8 @@ class AppModule(private val application: Application) {
     @Provides
     @ApplicationScope
     fun provideNewsDao(database: NewsDatabase): NewsDao = database.newsDao()
+
+    @Provides
+    @ApplicationScope
+    fun provideNewsRepository(dao: NewsDao, api: NewsApi): NewsRepository = NewsRepositoryImpl(dao, api)
 }

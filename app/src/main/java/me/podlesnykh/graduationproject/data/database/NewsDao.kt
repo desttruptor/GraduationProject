@@ -19,7 +19,7 @@ interface NewsDao {
     suspend fun insertSources(sourcesList: List<SourcesEntity>)
 
     @Query("DELETE FROM ARTICLES")
-    suspend fun deleteEverythingArticles()
+    suspend fun deleteEverything()
 
     @Query("DELETE FROM TOP_HEADLINES")
     suspend fun deleteTopHeadlines()
@@ -28,7 +28,7 @@ interface NewsDao {
     suspend fun deleteSources()
 
     @Query("SELECT * FROM ARTICLES")
-    suspend fun getAllEverythingArticles(): List<EverythingEntity>
+    suspend fun getAllEverything(): List<EverythingEntity>
 
     @Query("SELECT * FROM TOP_HEADLINES")
     suspend fun getAllTopHeadlines(): List<TopHeadlinesEntity>

@@ -38,9 +38,19 @@ class NewsRepositoryImpl(
         pageSize: String,
         page: String
     ): Response<ArticlesResponse> =
-        newsApi.getTopHeadlines(
-            country, category, sources, q, pageSize, page
-        )
+        if (sources != null) {
+            newsApi.getTopHeadlines(
+                "", "", sources, q, pageSize, page
+            )
+        } else if (country != null && category != null) {
+            newsApi.getTopHeadlines(
+                country, category, "", q, pageSize, page
+            )
+        } else {
+            newsApi.getTopHeadlines(
+                "", "", "", q, pageSize, page
+            )
+        }
 
     override suspend fun getSourcesFromNetwork(
         category: String,
@@ -51,27 +61,27 @@ class NewsRepositoryImpl(
             category, language, country
         )
 
-    override suspend fun getEverythingFromLocal(): List<EverythingEntity> {
-        TODO("Not yet implemented")
-    }
+    override suspend fun getEverythingFromLocal(): List<EverythingEntity> =
+        newsDao.getAllEverything()
 
-    override suspend fun getTopHeadlinesFromLocal(): List<TopHeadlinesEntity> {
-        TODO("Not yet implemented")
-    }
+    override suspend fun getTopHeadlinesFromLocal(): List<TopHeadlinesEntity> =
+        newsDao.getAllTopHeadlines()
 
-    override suspend fun getSourcesFromLocal(): List<SourcesEntity> {
-        TODO("Not yet implemented")
-    }
+    override suspend fun getSourcesFromLocal(): List<SourcesEntity> =
+        newsDao.getAllSources()
 
     override suspend fun saveEverythingToLocal(everythingList: List<EverythingEntity>) {
-        TODO("Not yet implemented")
+        newsDao.deleteEverything()
+        newsDao.insertEverything(everythingList)
     }
 
     override suspend fun saveTopHeadlinesToLocal(topHeadlinesList: List<TopHeadlinesEntity>) {
-        TODO("Not yet implemented")
+        newsDao.deleteTopHeadlines()
+        newsDao.insertTopHeadlines(topHeadlinesList)
     }
 
     override suspend fun saveSourcesToLocal(sourcesList: List<SourcesEntity>) {
-        TODO("Not yet implemented")
+        newsDao.deleteSources()
+        newsDao.insertSources(sourcesList)
     }
 }
