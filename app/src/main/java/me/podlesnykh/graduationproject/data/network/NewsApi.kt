@@ -1,7 +1,8 @@
-package me.podlesnykh.graduationproject.network
+package me.podlesnykh.graduationproject.data.network
 
-import me.podlesnykh.graduationproject.network.models.ArticlesResponse
-import me.podlesnykh.graduationproject.network.models.SourcesResponse
+import me.podlesnykh.graduationproject.data.network.models.ArticlesResponse
+import me.podlesnykh.graduationproject.data.network.models.SourcesResponse
+import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Query
 
@@ -19,7 +20,7 @@ interface NewsApi {
         @Query("sortBy") sortBy: String,
         @Query("pageSize") pageSize: String,
         @Query("page") page: String
-    ): ArticlesResponse
+    ): Response<ArticlesResponse>
 
     @GET("/v2/top-headlines")
     suspend fun getTopHeadlines(
@@ -32,12 +33,12 @@ interface NewsApi {
         @Query("q") q: String,
         @Query("pageSize") pageSize: String,
         @Query("page") page: String
-    ): ArticlesResponse
+    ): Response<ArticlesResponse>
 
     @GET("/v2/top-headlines/sources")
     suspend fun getSources(
         @Query("category") category: String,
         @Query("language") language: String,
         @Query("country") country: String
-    ): SourcesResponse
+    ): Response<SourcesResponse>
 }

@@ -1,8 +1,8 @@
 package me.podlesnykh.graduationproject.network.utils
 
 import com.google.common.truth.Truth
-import me.podlesnykh.graduationproject.network.utils.NewsApiUtils.encodeUrl
-import me.podlesnykh.graduationproject.network.utils.NewsApiUtils.searchIn
+import me.podlesnykh.graduationproject.data.network.utils.NewsApiUtils.encodeUrl
+import me.podlesnykh.graduationproject.data.network.utils.NewsApiUtils.searchIn
 import org.junit.Test
 
 /**

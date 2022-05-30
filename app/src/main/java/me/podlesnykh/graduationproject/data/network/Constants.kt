@@ -1,4 +1,4 @@
-package me.podlesnykh.graduationproject.network
+package me.podlesnykh.graduationproject.data.network
 
 object Constants {
     const val NEWS_API_BASE_URL = "https://newsapi.org/v2/"

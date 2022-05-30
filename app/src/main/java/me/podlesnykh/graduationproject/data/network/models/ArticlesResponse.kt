@@ -1,9 +1,9 @@
-package me.podlesnykh.graduationproject.network.models
+package me.podlesnykh.graduationproject.data.network.models
 
 import com.google.gson.annotations.SerializedName
 
 /**
- * Модель ответа по запросу на эндпойнт "/v2/everything"
+ * Responce model on "/v2/everything" and "/v2/top-headlines" requests
  */
 data class ArticlesResponse(
 
@@ -15,15 +15,6 @@ data class ArticlesResponse(
 
     @field:SerializedName("status")
     val status: String? = null
-)
-
-data class Source(
-
-    @field:SerializedName("name")
-    val name: String? = null,
-
-    @field:SerializedName("id")
-    val id: String? = null
 )
 
 data class ArticlesItem(
@@ -51,4 +42,13 @@ data class ArticlesItem(
 
     @field:SerializedName("content")
     val content: String? = null
+)
+
+data class Source(
+
+    @field:SerializedName("name")
+    val name: String? = null,
+
+    @field:SerializedName("id")
+    val id: String? = null
 )

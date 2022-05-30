@@ -62,7 +62,7 @@
             app:layout_constraintEnd_toEndOf="@id/article_item_expand_button"
             app:layout_constraintStart_toStartOf="@+id/article_item_title_text_view"
             app:layout_constraintTop_toBottomOf="@id/article_item_title_text_view"
-            tools:visibility="gone">
+            tools:visibility="visible">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"

@@ -1,4 +1,4 @@
-package me.podlesnykh.graduationproject.network.models
+package me.podlesnykh.graduationproject.data.network.models
 
 import com.google.gson.annotations.SerializedName
 
