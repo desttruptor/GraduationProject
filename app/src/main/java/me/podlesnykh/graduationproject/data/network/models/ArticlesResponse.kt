@@ -3,7 +3,7 @@ package me.podlesnykh.graduationproject.data.network.models
 import com.google.gson.annotations.SerializedName
 
 /**
- * Модель ответа по запросу на эндпойнт "/v2/everything"
+ * Responce model on "/v2/everything" and "/v2/top-headlines" requests
  */
 data class ArticlesResponse(
 

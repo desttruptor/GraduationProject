@@ -3,14 +3,14 @@ package me.podlesnykh.graduationproject.data.database
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
-import me.podlesnykh.graduationproject.data.database.entities.ArticleEntity
+import me.podlesnykh.graduationproject.data.database.entities.EverythingEntity
 import me.podlesnykh.graduationproject.data.database.entities.SourcesEntity
 import me.podlesnykh.graduationproject.data.database.entities.TopHeadlinesEntity
 
 @Dao
 interface NewsDao {
     @Insert
-    suspend fun insertEverythingArticles(articleList: List<ArticleEntity>)
+    suspend fun insertEverything(everythingList: List<EverythingEntity>)
 
     @Insert
     suspend fun insertTopHeadlines(topHeadlinesList: List<TopHeadlinesEntity>)
@@ -28,7 +28,7 @@ interface NewsDao {
     suspend fun deleteSources()
 
     @Query("SELECT * FROM ARTICLES")
-    suspend fun getAllEverythingArticles(): List<ArticleEntity>
+    suspend fun getAllEverythingArticles(): List<EverythingEntity>
 
     @Query("SELECT * FROM TOP_HEADLINES")
     suspend fun getAllTopHeadlines(): List<TopHeadlinesEntity>
