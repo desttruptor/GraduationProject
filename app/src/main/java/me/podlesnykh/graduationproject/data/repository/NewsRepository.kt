@@ -5,6 +5,8 @@ import me.podlesnykh.graduationproject.data.database.entities.SourcesEntity
 import me.podlesnykh.graduationproject.data.database.entities.TopHeadlinesEntity
 import me.podlesnykh.graduationproject.data.network.models.ArticlesResponse
 import me.podlesnykh.graduationproject.data.network.models.SourcesResponse
+import me.podlesnykh.graduationproject.presentation.models.ArticleModel
+import me.podlesnykh.graduationproject.presentation.models.SourceModel
 import retrofit2.Response
 
 /**
@@ -93,19 +95,19 @@ interface NewsRepository {
 
     /**
      * @param everythingList list of articles to insert
-     * Insert [List] of [EverythingEntity] into database
+     * Insert [List] of [ArticleModel] into database
      */
-    suspend fun saveEverythingToLocal(everythingList: List<EverythingEntity>)
+    suspend fun saveEverythingToLocal(everythingList: List<ArticleModel>)
 
     /**
      * @param topHeadlinesList list of articles to insert
-     * Insert [List] of [TopHeadlinesEntity] into database
+     * Insert [List] of [ArticleModel] into database
      */
-    suspend fun saveTopHeadlinesToLocal(topHeadlinesList: List<TopHeadlinesEntity>)
+    suspend fun saveTopHeadlinesToLocal(topHeadlinesList: List<ArticleModel>)
 
     /**
      * @param sourcesList list of sources to insert
-     * Insert [List] of [SourcesEntity] into database
+     * Insert [List] of [SourceModel] into database
      */
-    suspend fun saveSourcesToLocal(sourcesList: List<SourcesEntity>)
+    suspend fun saveSourcesToLocal(sourcesList: List<SourceModel>)
 }

@@ -7,6 +7,8 @@ import me.podlesnykh.graduationproject.data.database.entities.TopHeadlinesEntity
 import me.podlesnykh.graduationproject.data.network.NewsApi
 import me.podlesnykh.graduationproject.data.network.models.ArticlesResponse
 import me.podlesnykh.graduationproject.data.network.models.SourcesResponse
+import me.podlesnykh.graduationproject.presentation.models.ArticleModel
+import me.podlesnykh.graduationproject.presentation.models.SourceModel
 import retrofit2.Response
 
 class NewsRepositoryImpl(
@@ -70,17 +72,17 @@ class NewsRepositoryImpl(
     override suspend fun getSourcesFromLocal(): List<SourcesEntity> =
         newsDao.getAllSources()
 
-    override suspend fun saveEverythingToLocal(everythingList: List<EverythingEntity>) {
+    override suspend fun saveEverythingToLocal(everythingList: List<ArticleModel>) {
         newsDao.deleteEverything()
         newsDao.insertEverything(everythingList)
     }
 
-    override suspend fun saveTopHeadlinesToLocal(topHeadlinesList: List<TopHeadlinesEntity>) {
+    override suspend fun saveTopHeadlinesToLocal(topHeadlinesList: List<ArticleModel>) {
         newsDao.deleteTopHeadlines()
         newsDao.insertTopHeadlines(topHeadlinesList)
     }
 
-    override suspend fun saveSourcesToLocal(sourcesList: List<SourcesEntity>) {
+    override suspend fun saveSourcesToLocal(sourcesList: List<SourceModel>) {
         newsDao.deleteSources()
         newsDao.insertSources(sourcesList)
     }

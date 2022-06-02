@@ -14,4 +14,4 @@ data class TopHeadlinesEntity(
     val title: String,
     val url: String,
     val content: String
-)
+) : DbEntity
