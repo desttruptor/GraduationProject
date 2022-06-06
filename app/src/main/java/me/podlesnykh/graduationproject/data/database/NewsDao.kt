@@ -30,11 +30,11 @@ interface NewsDao {
     suspend fun deleteSources()
 
     @Query("SELECT * FROM ARTICLES")
-    suspend fun getAllEverything(): List<EverythingEntity>
+    suspend fun getAllEverything(): List<EverythingEntity>?
 
     @Query("SELECT * FROM TOP_HEADLINES")
-    suspend fun getAllTopHeadlines(): List<TopHeadlinesEntity>
+    suspend fun getAllTopHeadlines(): List<TopHeadlinesEntity>?
 
     @Query("SELECT * FROM SOURCES")
-    suspend fun getAllSources(): List<SourcesEntity>
+    suspend fun getAllSources(): List<SourcesEntity>?
 }

@@ -3,32 +3,28 @@ package me.podlesnykh.graduationproject.domain.mappers
 import me.podlesnykh.graduationproject.data.network.models.ArticlesResponse
 import me.podlesnykh.graduationproject.data.network.models.SourcesResponse
 import me.podlesnykh.graduationproject.presentation.models.ArticleModel
-import me.podlesnykh.graduationproject.presentation.models.ArticlesContainer
 import me.podlesnykh.graduationproject.presentation.models.SourceModel
 import retrofit2.Response
 
 object NetworkResponseMappers {
-    fun Response<ArticlesResponse>.mapArticlesResponseToContainer(): ArticlesContainer =
-        this.body()?.let {
-            ArticlesContainer(
-                totalResults = it.totalResults,
-                articles = it.articles?.map { articlesItem ->
-                    ArticleModel(
-                        publishedAt = articlesItem.publishedAt ?: "",
-                        author = articlesItem.author ?: "",
-                        urlToImage = articlesItem.urlToImage ?: "",
-                        description = articlesItem.description ?: "",
-                        source = articlesItem.source?.name ?: "",
-                        title = articlesItem.title ?: "",
-                        url = articlesItem.url ?: "",
-                        content = articlesItem.content ?: ""
-                    )
-                } ?: emptyList()
-            )
-        } ?: ArticlesContainer(0, emptyList())
+    fun mapArticlesResponseToArticlesList(response: Response<ArticlesResponse>): List<ArticleModel> =
+        response.body()?.let {
+            it.articles?.map { articlesItem ->
+                ArticleModel(
+                    publishedAt = articlesItem.publishedAt ?: "",
+                    author = articlesItem.author ?: "",
+                    urlToImage = articlesItem.urlToImage ?: "",
+                    description = articlesItem.description ?: "",
+                    source = articlesItem.source?.name ?: "",
+                    title = articlesItem.title ?: "",
+                    url = articlesItem.url ?: "",
+                    content = articlesItem.content ?: ""
+                )
+            } ?: emptyList()
+        } ?: emptyList()
 
-    fun Response<SourcesResponse>.mapSourcesResponseToSourcesList(): List<SourceModel> =
-        this.body()?.let {
+    fun mapSourcesResponseToSourcesList(response: Response<SourcesResponse>): List<SourceModel> =
+        response.body()?.let {
             it.sources?.map { sourcesItem ->
                 SourceModel(
                     country = sourcesItem.country ?: "",

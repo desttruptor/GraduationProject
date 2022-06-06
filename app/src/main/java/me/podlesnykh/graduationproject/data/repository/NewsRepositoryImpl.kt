@@ -16,20 +16,30 @@ class NewsRepositoryImpl(
     private val newsApi: NewsApi
 ) : NewsRepository {
     override suspend fun getEverythingFromNetwork(
-        keyword: String,
-        searchIn: String,
-        sources: String,
-        domains: String,
-        excludeDomains: String,
-        from: String,
-        to: String,
-        language: String,
-        sortBy: String,
-        pageSize: String,
-        page: String
+        keyword: String?,
+        searchIn: String?,
+        sources: String?,
+        domains: String?,
+        excludeDomains: String?,
+        from: String?,
+        to: String?,
+        language: String?,
+        sortBy: String?,
+        pageSize: String?,
+        page: String?
     ): Response<ArticlesResponse> =
         newsApi.getEverything(
-            keyword, searchIn, sources, domains, excludeDomains, from, to, language, sortBy, pageSize, page
+            keyword,
+            searchIn,
+            sources,
+            domains,
+            excludeDomains,
+            from,
+            to,
+            language,
+            sortBy,
+            pageSize,
+            page
         )
 
     override suspend fun getTopHeadlinesFromNetwork(
@@ -63,13 +73,13 @@ class NewsRepositoryImpl(
             category, language, country
         )
 
-    override suspend fun getEverythingFromLocal(): List<EverythingEntity> =
+    override suspend fun getEverythingFromLocal(): List<EverythingEntity>? =
         newsDao.getAllEverything()
 
-    override suspend fun getTopHeadlinesFromLocal(): List<TopHeadlinesEntity> =
+    override suspend fun getTopHeadlinesFromLocal(): List<TopHeadlinesEntity>? =
         newsDao.getAllTopHeadlines()
 
-    override suspend fun getSourcesFromLocal(): List<SourcesEntity> =
+    override suspend fun getSourcesFromLocal(): List<SourcesEntity>? =
         newsDao.getAllSources()
 
     override suspend fun saveEverythingToLocal(everythingList: List<ArticleModel>) {

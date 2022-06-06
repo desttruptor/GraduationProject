@@ -31,17 +31,17 @@ interface NewsRepository {
      * @param page Use this to page through the results.
      */
     suspend fun getEverythingFromNetwork(
-        keyword: String,
-        searchIn: String,
-        sources: String,
-        domains: String,
-        excludeDomains: String,
-        from: String,
-        to: String,
-        language: String,
-        sortBy: String,
-        pageSize: String,
-        page: String
+        keyword: String?,
+        searchIn: String?,
+        sources: String?,
+        domains: String?,
+        excludeDomains: String?,
+        from: String?,
+        to: String?,
+        language: String?,
+        sortBy: String?,
+        pageSize: String?,
+        page: String?
     ): Response<ArticlesResponse>
 
     /**
@@ -81,17 +81,17 @@ interface NewsRepository {
     /**
      * @return [List] of [EverythingEntity] from database
      */
-    suspend fun getEverythingFromLocal(): List<EverythingEntity>
+    suspend fun getEverythingFromLocal(): List<EverythingEntity>?
 
     /**
      * @return [List] of [TopHeadlinesEntity] from database
      */
-    suspend fun getTopHeadlinesFromLocal(): List<TopHeadlinesEntity>
+    suspend fun getTopHeadlinesFromLocal(): List<TopHeadlinesEntity>?
 
     /**
      * @return [List] of [SourcesEntity] from database
      */
-    suspend fun getSourcesFromLocal(): List<SourcesEntity>
+    suspend fun getSourcesFromLocal(): List<SourcesEntity>?
 
     /**
      * @param everythingList list of articles to insert
