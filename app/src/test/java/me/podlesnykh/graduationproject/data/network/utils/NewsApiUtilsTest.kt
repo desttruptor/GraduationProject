@@ -6,7 +6,7 @@ import me.podlesnykh.graduationproject.data.network.utils.NewsApiUtils.searchIn
 import org.junit.Test
 
 /**
- * Tests for [NewsApiUtils]
+ * Tests for [me.podlesnykh.graduationproject.data.network.utils.NewsApiUtils]
  */
 class NewsApiUtilsTest {
     @Test

@@ -1,7 +1,5 @@
 package me.podlesnykh.graduationproject.presentation.models
 
-import me.podlesnykh.graduationproject.data.network.models.Source
-
 /**
  * Article model for presentation layer
  */

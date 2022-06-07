@@ -1,8 +1,10 @@
 package me.podlesnykh.graduationproject.di.application
 
-import android.app.Application
 import dagger.Component
+import me.podlesnykh.graduationproject.presentation.viewmodels.ArticlesViewModel
 
 @ApplicationScope
 @Component(modules = [AppModule::class])
-interface AppComponent
+interface AppComponent {
+    fun inject(viewModel: ArticlesViewModel)
+}

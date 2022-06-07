@@ -6,17 +6,19 @@ import androidx.room.Query
 import me.podlesnykh.graduationproject.data.database.entities.EverythingEntity
 import me.podlesnykh.graduationproject.data.database.entities.SourcesEntity
 import me.podlesnykh.graduationproject.data.database.entities.TopHeadlinesEntity
+import me.podlesnykh.graduationproject.presentation.models.ArticleModel
+import me.podlesnykh.graduationproject.presentation.models.SourceModel
 
 @Dao
 interface NewsDao {
-    @Insert
-    suspend fun insertEverything(everythingList: List<EverythingEntity>)
+    @Insert(entity = EverythingEntity::class)
+    suspend fun insertEverything(everythingList: List<ArticleModel>)
 
-    @Insert
-    suspend fun insertTopHeadlines(topHeadlinesList: List<TopHeadlinesEntity>)
+    @Insert(entity = TopHeadlinesEntity::class)
+    suspend fun insertTopHeadlines(topHeadlinesList: List<ArticleModel>)
 
-    @Insert
-    suspend fun insertSources(sourcesList: List<SourcesEntity>)
+    @Insert(entity = SourcesEntity::class)
+    suspend fun insertSources(sourcesList: List<SourceModel>)
 
     @Query("DELETE FROM ARTICLES")
     suspend fun deleteEverything()
@@ -28,11 +30,11 @@ interface NewsDao {
     suspend fun deleteSources()
 
     @Query("SELECT * FROM ARTICLES")
-    suspend fun getAllEverything(): List<EverythingEntity>
+    suspend fun getAllEverything(): List<EverythingEntity>?
 
     @Query("SELECT * FROM TOP_HEADLINES")
-    suspend fun getAllTopHeadlines(): List<TopHeadlinesEntity>
+    suspend fun getAllTopHeadlines(): List<TopHeadlinesEntity>?
 
     @Query("SELECT * FROM SOURCES")
-    suspend fun getAllSources(): List<SourcesEntity>
+    suspend fun getAllSources(): List<SourcesEntity>?
 }
