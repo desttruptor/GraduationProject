@@ -13,6 +13,7 @@ import me.podlesnykh.graduationproject.data.network.interceptors.LoggingIntercep
 import me.podlesnykh.graduationproject.data.repository.NewsRepository
 import me.podlesnykh.graduationproject.data.repository.NewsRepositoryImpl
 import me.podlesnykh.graduationproject.domain.usecases.GetEverythingUseCase
+import me.podlesnykh.graduationproject.domain.usecases.GetTopHeadlinesUseCase
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -75,4 +76,9 @@ class AppModule(private val application: Application) {
     @Provides
     @ApplicationScope
     fun provideGetEverythingUseCase(repository: NewsRepository) = GetEverythingUseCase(repository)
+
+    @Provides
+    @ApplicationScope
+    fun provideGetTopHeadlinesUseCase(repository: NewsRepository) =
+        GetTopHeadlinesUseCase(repository)
 }

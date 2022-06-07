@@ -1,6 +1,5 @@
 package me.podlesnykh.graduationproject.presentation.fragments
 
-import android.content.Context
 import android.content.res.Resources
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -14,8 +13,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
 import me.podlesnykh.graduationproject.R
 import me.podlesnykh.graduationproject.databinding.FragmentArticlesBinding
-import me.podlesnykh.graduationproject.di.application.AppComponent
-import me.podlesnykh.graduationproject.presentation.activities.MainActivity
 import me.podlesnykh.graduationproject.presentation.adapters.ArticlesListAdapter
 import me.podlesnykh.graduationproject.presentation.common.fragments.BaseFragment
 import me.podlesnykh.graduationproject.presentation.viewmodels.ArticlesViewModel
@@ -23,18 +20,12 @@ import me.podlesnykh.graduationproject.presentation.viewmodels.ArticlesViewModel
 class ArticlesFragment : BaseFragment() {
 
     private lateinit var viewModel: ArticlesViewModel
-    private lateinit var appComponent: AppComponent
 
     private var _binding: FragmentArticlesBinding? = null
     private val binding get() = _binding!!
 
     private val articlesListAdapter = ArticlesListAdapter(::onWatchFullArticleClicked).apply {
         stateRestorationPolicy = RecyclerView.Adapter.StateRestorationPolicy.ALLOW
-    }
-
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        appComponent = (activity as MainActivity).appComponent
     }
 
     override fun onCreateView(
@@ -45,14 +36,7 @@ class ArticlesFragment : BaseFragment() {
         _binding = FragmentArticlesBinding.inflate(inflater, container, false)
         setupToolbar()
         setupRecyclerView()
-        viewModel = ViewModelProvider(this)[ArticlesViewModel::class.java]
-        appComponent.inject(viewModel)
-        viewModel.articlesListLiveData.observe(viewLifecycleOwner) {
-            articlesListAdapter.submitList(it)
-        }
-        viewModel.errorDialogLiveData.observe(viewLifecycleOwner) {
-            Snackbar.make(binding.articlesBottomNavbar, it, 5000).show()
-        }
+        setupViewModel()
         viewModel.getArticles()
         return binding.root
     }
@@ -78,9 +62,32 @@ class ArticlesFragment : BaseFragment() {
         binding.articlesRecyclerView.layoutManager =
             LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         binding.articlesRecyclerView.adapter = articlesListAdapter
+        binding.articlesRecyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                if (!recyclerView.canScrollVertically(1)) {
+                    onEndOfListReached()
+                }
+            }
+        })
+    }
+
+    private fun setupViewModel() {
+        viewModel = ViewModelProvider(this)[ArticlesViewModel::class.java]
+        appComponent.inject(viewModel)
+        viewModel.articlesListLiveData.observe(viewLifecycleOwner) {
+            articlesListAdapter.submitList(it)
+        }
+        viewModel.errorDialogLiveData.observe(viewLifecycleOwner) {
+            Snackbar.make(binding.articlesBottomNavbar, it, 5000).show()
+        }
+    }
+
+    private fun onEndOfListReached() {
+        TODO("Implement next page loading")
     }
 
     private fun onWatchFullArticleClicked(view: View) {
+        TODO("Implement new intent sending")
     }
 
     companion object {

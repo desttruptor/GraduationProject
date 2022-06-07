@@ -67,7 +67,6 @@ class NewsRepositoryImplTest {
 
     private val newsRepository = NewsRepositoryImpl(newsDao, newsApi)
 
-    @OptIn(ExperimentalCoroutinesApi::class)
     @Test
     fun getEverythingFromNetworkTest() = runTest {
 
@@ -102,7 +101,6 @@ class NewsRepositoryImplTest {
         }
     }
 
-    @OptIn(ExperimentalCoroutinesApi::class)
     @Test
     fun getTopHeadlinesFromNetworkTest() = runTest {
 
@@ -127,7 +125,6 @@ class NewsRepositoryImplTest {
         }
     }
 
-    @OptIn(ExperimentalCoroutinesApi::class)
     @Test
     fun getSourcesFromNetworkTest() = runTest {
 
@@ -146,7 +143,6 @@ class NewsRepositoryImplTest {
         }
     }
 
-    @OptIn(ExperimentalCoroutinesApi::class)
     @Test
     fun getEverythingFromLocalTest() = runTest {
 
@@ -157,7 +153,6 @@ class NewsRepositoryImplTest {
         }
     }
 
-    @OptIn(ExperimentalCoroutinesApi::class)
     @Test
     fun getTopHeadlinesFromLocalTest() = runTest {
 
@@ -168,7 +163,6 @@ class NewsRepositoryImplTest {
         }
     }
 
-    @OptIn(ExperimentalCoroutinesApi::class)
     @Test
     fun getSourcesFromLocalTest() = runTest {
 
@@ -179,39 +173,60 @@ class NewsRepositoryImplTest {
         }
     }
 
-    @OptIn(ExperimentalCoroutinesApi::class)
     @Test
     fun saveEverythingToLocalTest() = runTest {
 
         newsRepository.saveEverythingToLocal(ResponseTestUtils.createAllArticlesList())
 
         coVerify {
-            newsDao.deleteEverything()
             newsDao.insertEverything(ResponseTestUtils.createAllArticlesList())
         }
     }
 
-    @OptIn(ExperimentalCoroutinesApi::class)
     @Test
-    fun saveTopHeadlinesToLocal() = runTest {
+    fun saveTopHeadlinesToLocalTest() = runTest {
 
         newsRepository.saveTopHeadlinesToLocal(ResponseTestUtils.createAllArticlesList())
 
         coVerify {
-            newsDao.deleteTopHeadlines()
             newsDao.insertTopHeadlines(ResponseTestUtils.createAllArticlesList())
         }
     }
 
-    @OptIn(ExperimentalCoroutinesApi::class)
     @Test
-    fun saveSourcesToLocal() = runTest {
+    fun saveSourcesToLocalTest() = runTest {
 
         newsRepository.saveSourcesToLocal(ResponseTestUtils.createAllSourcesList())
 
         coVerify {
-            newsDao.deleteSources()
             newsDao.insertSources(ResponseTestUtils.createAllSourcesList())
+        }
+    }
+
+    @Test
+    fun deleteEverythingTest() = runTest {
+        newsRepository.deleteEverything()
+
+        coVerify {
+            newsDao.deleteEverything()
+        }
+    }
+
+    @Test
+    fun deleteTopHeadlinesTest() = runTest {
+        newsRepository.deleteTopHeadlines()
+
+        coVerify {
+            newsDao.deleteTopHeadlines()
+        }
+    }
+
+    @Test
+    fun deleteSourcesTest() = runTest {
+        newsRepository.deleteSources()
+
+        coVerify {
+            newsDao.deleteSources()
         }
     }
 

@@ -46,9 +46,9 @@ class NewsRepositoryImpl(
         country: String?,
         category: String?,
         sources: String?,
-        q: String,
-        pageSize: String,
-        page: String
+        q: String?,
+        pageSize: String?,
+        page: String?
     ): Response<ArticlesResponse> =
         if (sources != null) {
             newsApi.getTopHeadlines(
@@ -65,9 +65,9 @@ class NewsRepositoryImpl(
         }
 
     override suspend fun getSourcesFromNetwork(
-        category: String,
-        language: String,
-        country: String
+        category: String?,
+        language: String?,
+        country: String?
     ): Response<SourcesResponse> =
         newsApi.getSources(
             category, language, country
@@ -83,17 +83,26 @@ class NewsRepositoryImpl(
         newsDao.getAllSources()
 
     override suspend fun saveEverythingToLocal(everythingList: List<ArticleModel>) {
-        newsDao.deleteEverything()
         newsDao.insertEverything(everythingList)
     }
 
     override suspend fun saveTopHeadlinesToLocal(topHeadlinesList: List<ArticleModel>) {
-        newsDao.deleteTopHeadlines()
         newsDao.insertTopHeadlines(topHeadlinesList)
     }
 
     override suspend fun saveSourcesToLocal(sourcesList: List<SourceModel>) {
-        newsDao.deleteSources()
         newsDao.insertSources(sourcesList)
+    }
+
+    override suspend fun deleteEverything() {
+        newsDao.deleteEverything()
+    }
+
+    override suspend fun deleteTopHeadlines() {
+        newsDao.deleteTopHeadlines()
+    }
+
+    override suspend fun deleteSources() {
+        newsDao.deleteSources()
     }
 }
