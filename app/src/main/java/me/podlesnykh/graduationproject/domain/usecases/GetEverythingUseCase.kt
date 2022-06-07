@@ -14,9 +14,9 @@ class GetEverythingUseCase(
 ) {
     suspend fun execute(
         settingsModel: EverythingSearchSettingsModel,
-        isForceReloadData: Boolean
+        isFirstLoad: Boolean
     ): Response {
-        return if (isForceReloadData) {
+        return if (isFirstLoad) {
             getFromNetwork(settingsModel)
         } else {
             getFromDatabase(settingsModel)

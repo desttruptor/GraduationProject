@@ -59,9 +59,9 @@ interface NewsRepository {
         country: String?,
         category: String?,
         sources: String?,
-        q: String,
-        pageSize: String,
-        page: String
+        q: String?,
+        pageSize: String?,
+        page: String?
     ): Response<ArticlesResponse>
 
     /**
@@ -73,9 +73,9 @@ interface NewsRepository {
      * @param country Find sources that display news in a specific country.
      */
     suspend fun getSourcesFromNetwork(
-        category: String,
-        language: String,
-        country: String
+        category: String?,
+        language: String?,
+        country: String?
     ): Response<SourcesResponse>
 
     /**
@@ -110,4 +110,19 @@ interface NewsRepository {
      * Insert [List] of [SourceModel] into database
      */
     suspend fun saveSourcesToLocal(sourcesList: List<SourceModel>)
+
+    /**
+     * Function to delete everything from "Everything" table in DB
+     */
+    suspend fun deleteEverything()
+
+    /**
+     * Function to delete everything from "Top headlines" table in DB
+     */
+    suspend fun deleteTopHeadlines()
+
+    /**
+     * Function to delete everything from "Sources" table in DB
+     */
+    suspend fun deleteSources()
 }
