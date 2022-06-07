@@ -5,18 +5,10 @@ import io.mockk.coVerify
 import io.mockk.mockk
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
+import me.podlesnykh.graduationproject.common.ResponseTestUtils
 import me.podlesnykh.graduationproject.data.database.NewsDao
-import me.podlesnykh.graduationproject.data.database.entities.EverythingEntity
-import me.podlesnykh.graduationproject.data.database.entities.SourcesEntity
-import me.podlesnykh.graduationproject.data.database.entities.TopHeadlinesEntity
 import me.podlesnykh.graduationproject.data.network.NewsApi
-import me.podlesnykh.graduationproject.data.network.models.ArticlesItem
-import me.podlesnykh.graduationproject.data.network.models.ArticlesResponse
-import me.podlesnykh.graduationproject.data.network.models.Source
-import me.podlesnykh.graduationproject.data.network.models.SourcesItem
-import me.podlesnykh.graduationproject.data.network.models.SourcesResponse
 import org.junit.Test
-import retrofit2.Response
 
 /**
  * Test for [NewsRepositoryImpl]
@@ -31,10 +23,11 @@ class NewsRepositoryImplTest {
         coEvery { insertSources(any()) } returns Unit
         coEvery { insertEverything(any()) } returns Unit
         coEvery { insertTopHeadlines(any()) } returns Unit
-        coEvery { getAllSources() } returns createAllSourcesList()
-        coEvery { getAllEverything() } returns createAllEverythingList()
-        coEvery { getAllTopHeadlines() } returns createAllTopHeadlinesList()
+        coEvery { getAllSources() } returns ResponseTestUtils.createDatabaseSourcesResponse()
+        coEvery { getAllEverything() } returns ResponseTestUtils.createDatabaseEverythingResponse()
+        coEvery { getAllTopHeadlines() } returns ResponseTestUtils.createDatabaseTopHeadlinesResponse()
     }
+
     private val newsApi: NewsApi = mockk {
         coEvery {
             getEverything(
@@ -50,7 +43,7 @@ class NewsRepositoryImplTest {
                 any(),
                 any()
             )
-        } returns createArticlesRetrofitResponse()
+        } returns ResponseTestUtils.createArticlesRetrofitResponse()
 
         coEvery {
             getTopHeadlines(
@@ -61,9 +54,15 @@ class NewsRepositoryImplTest {
                 any(),
                 any()
             )
-        } returns createArticlesRetrofitResponse()
+        } returns ResponseTestUtils.createArticlesRetrofitResponse()
 
-        coEvery { getSources(any(), any(), any()) } returns createSourcesRetrofitResponse()
+        coEvery {
+            getSources(
+                any(),
+                any(),
+                any()
+            )
+        } returns ResponseTestUtils.createSourcesRetrofitResponse()
     }
 
     private val newsRepository = NewsRepositoryImpl(newsDao, newsApi)
@@ -184,11 +183,11 @@ class NewsRepositoryImplTest {
     @Test
     fun saveEverythingToLocalTest() = runTest {
 
-        newsRepository.saveEverythingToLocal(createAllEverythingList())
+        newsRepository.saveEverythingToLocal(ResponseTestUtils.createAllArticlesList())
 
         coVerify {
             newsDao.deleteEverything()
-            newsDao.insertEverything(createAllEverythingList())
+            newsDao.insertEverything(ResponseTestUtils.createAllArticlesList())
         }
     }
 
@@ -196,11 +195,11 @@ class NewsRepositoryImplTest {
     @Test
     fun saveTopHeadlinesToLocal() = runTest {
 
-        newsRepository.saveTopHeadlinesToLocal(createAllTopHeadlinesList())
+        newsRepository.saveTopHeadlinesToLocal(ResponseTestUtils.createAllArticlesList())
 
         coVerify {
             newsDao.deleteTopHeadlines()
-            newsDao.insertTopHeadlines(createAllTopHeadlinesList())
+            newsDao.insertTopHeadlines(ResponseTestUtils.createAllArticlesList())
         }
     }
 
@@ -208,152 +207,15 @@ class NewsRepositoryImplTest {
     @Test
     fun saveSourcesToLocal() = runTest {
 
-        newsRepository.saveSourcesToLocal(createAllSourcesList())
+        newsRepository.saveSourcesToLocal(ResponseTestUtils.createAllSourcesList())
 
         coVerify {
             newsDao.deleteSources()
-            newsDao.insertSources(createAllSourcesList())
+            newsDao.insertSources(ResponseTestUtils.createAllSourcesList())
         }
     }
 
-    private fun createAllSourcesList() = listOf(
-        SourcesEntity(
-            numberInTable = 0,
-            country = "au",
-            name = "Australian Financial Review",
-            description = SAMPLE_TEXT,
-            language = "en",
-            id = "australian-financial-review",
-            category = "business",
-            url = SAMPLE_URL
-        ),
-        SourcesEntity(
-            numberInTable = 1,
-            country = "us",
-            name = "Bloomberg",
-            description = SAMPLE_TEXT,
-            language = "en",
-            id = "bloomberg",
-            category = "business",
-            url = SAMPLE_URL
-        )
-    )
-
-    private fun createAllEverythingList() = listOf(
-        EverythingEntity(
-            numberInTable = 0,
-            publishedAt = "2022-05-10T16:59:46Z",
-            author = "Arielle Pardes",
-            urlToImage = SAMPLE_URL_TO_IMAGE,
-            description = SAMPLE_TEXT,
-            source = "Wired",
-            title = "Miami’s Bitcoin Conference Left a Trail of Harassment",
-            url = SAMPLE_URL,
-            content = SAMPLE_TEXT
-        ),
-        EverythingEntity(
-            numberInTable = 1,
-            publishedAt = "2022-05-04T12:00:00Z",
-            author = "Justine Calma",
-            urlToImage = SAMPLE_URL_TO_IMAGE,
-            description = SAMPLE_TEXT,
-            source = "The Verge",
-            title = "Why fossil fuel companies see green in Bitcoin mining projects",
-            url = SAMPLE_URL,
-            content = SAMPLE_TEXT
-        )
-    )
-
-    private fun createAllTopHeadlinesList() = listOf(
-        TopHeadlinesEntity(
-            numberInTable = 0,
-            publishedAt = "2022-05-10T16:59:46Z",
-            author = "Arielle Pardes",
-            urlToImage = SAMPLE_URL_TO_IMAGE,
-            description = SAMPLE_TEXT,
-            source = "Wired",
-            title = "Miami’s Bitcoin Conference Left a Trail of Harassment",
-            url = SAMPLE_URL,
-            content = SAMPLE_TEXT
-        ),
-        TopHeadlinesEntity(
-            numberInTable = 1,
-            publishedAt = "2022-05-04T12:00:00Z",
-            author = "Justine Calma",
-            urlToImage = SAMPLE_URL_TO_IMAGE,
-            description = SAMPLE_TEXT,
-            source = "The Verge",
-            title = "Why fossil fuel companies see green in Bitcoin mining projects",
-            url = SAMPLE_URL,
-            content = SAMPLE_TEXT
-        )
-    )
-
-    private fun createArticlesRetrofitResponse(): Response<ArticlesResponse> =
-        Response.success(
-            ArticlesResponse(
-                status = "ok",
-                totalResults = 2,
-                articles = listOf(
-                    ArticlesItem(
-                        publishedAt = "2022-05-10T16:59:46Z",
-                        author = "Arielle Pardes",
-                        urlToImage = SAMPLE_URL_TO_IMAGE,
-                        description = SAMPLE_TEXT,
-                        source = createSource("Wired"),
-                        title = "Miami’s Bitcoin Conference Left a Trail of Harassment",
-                        url = SAMPLE_URL,
-                        content = SAMPLE_TEXT
-                    ),
-                    ArticlesItem(
-                        publishedAt = "2022-05-04T12:00:00Z",
-                        author = "Justine Calma",
-                        urlToImage = SAMPLE_URL_TO_IMAGE,
-                        description = SAMPLE_TEXT,
-                        source = createSource("The Verge"),
-                        title = "Why fossil fuel companies see green in Bitcoin mining projects",
-                        url = SAMPLE_URL,
-                        content = SAMPLE_TEXT
-                    )
-                )
-            )
-        )
-
-    private fun createSourcesRetrofitResponse(): Response<SourcesResponse> =
-        Response.success(
-            SourcesResponse(
-                status = "ok",
-                sources = listOf(
-                    SourcesItem(
-                        country = "au",
-                        name = "Australian Financial Review",
-                        description = SAMPLE_TEXT,
-                        language = "en",
-                        id = "australian-financial-review",
-                        category = "business",
-                        url = SAMPLE_URL
-                    ),
-                    SourcesItem(
-                        country = "us",
-                        name = "Bloomberg",
-                        description = SAMPLE_TEXT,
-                        language = "en",
-                        id = "bloomberg",
-                        category = "business",
-                        url = SAMPLE_URL
-                    )
-                )
-            )
-        )
-
-    private fun createSource(value: String) = Source(
-        name = value,
-        id = value
-    )
-
     companion object {
         private const val SAMPLE_TEXT = "sample_text"
-        private const val SAMPLE_URL_TO_IMAGE = "sample_url_to_image"
-        private const val SAMPLE_URL = "sample_url"
     }
 }

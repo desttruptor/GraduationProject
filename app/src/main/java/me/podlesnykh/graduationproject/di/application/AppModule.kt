@@ -1,19 +1,18 @@
 package me.podlesnykh.graduationproject.di.application
 
 import android.app.Application
-import android.util.Log
 import androidx.room.Room
 import dagger.Module
 import dagger.Provides
-import me.podlesnykh.graduationproject.R
 import me.podlesnykh.graduationproject.data.database.NewsDao
 import me.podlesnykh.graduationproject.data.database.NewsDatabase
 import me.podlesnykh.graduationproject.data.network.Constants
-import me.podlesnykh.graduationproject.data.network.Constants.TAG_REQUEST_LOG
-import me.podlesnykh.graduationproject.data.network.Constants.TAG_RESPONSE_LOG
 import me.podlesnykh.graduationproject.data.network.NewsApi
+import me.podlesnykh.graduationproject.data.network.interceptors.HeaderInterceptor
+import me.podlesnykh.graduationproject.data.network.interceptors.LoggingInterceptor
 import me.podlesnykh.graduationproject.data.repository.NewsRepository
 import me.podlesnykh.graduationproject.data.repository.NewsRepositoryImpl
+import me.podlesnykh.graduationproject.domain.usecases.GetEverythingUseCase
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -22,27 +21,26 @@ import retrofit2.converter.gson.GsonConverterFactory
 class AppModule(private val application: Application) {
     @Provides
     @ApplicationScope
-    fun provideApplication(application: Application) = application
+    fun provideApplication() = application
 
     @Provides
     @ApplicationScope
-    fun provideOkHttpClient(application: Application): OkHttpClient =
-        OkHttpClient.Builder().addInterceptor { chain ->
-            chain.proceed(
-                chain.request()
-                    .newBuilder()
-                    .header("X-Api-Key", application.resources.getString(R.string.news_api_key))
-                    .method(chain.request().method(), chain.request().body())
-                    .build()
-            )
-        }.addInterceptor { chain ->
-            val request = chain.request()
-            Log.v(TAG_REQUEST_LOG, "Sending request to ${request.url()}")
-            val response = chain.proceed(request)
-            Log.v(TAG_RESPONSE_LOG, "Received response body:\n${response.body()}")
+    fun provideLoggingInterceptor() = LoggingInterceptor()
 
-            return@addInterceptor response
-        }.build()
+    @Provides
+    @ApplicationScope
+    fun provideHeaderInterceptor(application: Application) = HeaderInterceptor(application)
+
+    @Provides
+    @ApplicationScope
+    fun provideOkHttpClient(
+        headerInterceptor: HeaderInterceptor,
+        loggingInterceptor: LoggingInterceptor
+    ): OkHttpClient =
+        OkHttpClient.Builder()
+            .addInterceptor(headerInterceptor)
+            .addInterceptor(loggingInterceptor)
+            .build()
 
     @Provides
     @ApplicationScope
@@ -71,5 +69,10 @@ class AppModule(private val application: Application) {
 
     @Provides
     @ApplicationScope
-    fun provideNewsRepository(dao: NewsDao, api: NewsApi): NewsRepository = NewsRepositoryImpl(dao, api)
+    fun provideNewsRepository(dao: NewsDao, api: NewsApi): NewsRepository =
+        NewsRepositoryImpl(dao, api)
+
+    @Provides
+    @ApplicationScope
+    fun provideGetEverythingUseCase(repository: NewsRepository) = GetEverythingUseCase(repository)
 }
