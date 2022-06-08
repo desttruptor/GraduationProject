@@ -2,6 +2,7 @@ package me.podlesnykh.graduationproject.presentation.models
 
 /**
  * Source model for presentation layer
+ * TODO IMPLEMENT
  */
 data class SourceModel(
     val country: String,

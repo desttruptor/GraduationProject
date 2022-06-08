@@ -45,6 +45,11 @@ class ArticlesFragment : BaseFragment() {
         return binding.root
     }
 
+    override fun onPause() {
+        super.onPause()
+        isFabOpen = false
+    }
+
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
@@ -76,7 +81,6 @@ class ArticlesFragment : BaseFragment() {
             }
         )
     }
-
 
     private fun setupViewModel() {
         viewModel = ViewModelProvider(this)[ArticlesViewModel::class.java]
@@ -127,35 +131,28 @@ class ArticlesFragment : BaseFragment() {
     inner class FabOnClickListener : View.OnClickListener {
         override fun onClick(view: View?) {
             when (view?.id) {
-                binding.searchFloatingActionButton.id -> {
-                    animateFab()
-                }
-                binding.searchTopHeadlinesButton.id -> {
-                    requireActivity().supportFragmentManager.beginTransaction()
-                        .replace(
-                            R.id.activity_main_fragment_container,
-                            SearchEverythingFragment.newInstance(),
-                            SearchEverythingFragment.TAG
-                        )
-                        .addToBackStack(SearchEverythingFragment.TAG)
-                        .commit()
-                }
-                binding.searchEverythingButton.id -> {
-                    requireActivity().supportFragmentManager.beginTransaction()
-                        .replace(
-                            R.id.activity_main_fragment_container,
-                            SearchTopHeadlinesFragment.newInstance(),
-                            SearchTopHeadlinesFragment.TAG
-                        )
-                        .addToBackStack(SearchTopHeadlinesFragment.TAG)
-                        .commit()
-                }
+                binding.searchFloatingActionButton.id -> animateFab()
+                binding.searchEverythingButton.id -> openSearchQueryFragment(
+                    SearchEverythingFragment.newInstance()
+                )
+                binding.searchTopHeadlinesButton.id -> openSearchQueryFragment(
+                    SearchTopHeadlinesFragment.newInstance()
+                )
             }
+        }
+
+        private fun openSearchQueryFragment(fragmentInstance: BaseFragment) {
+            parentFragmentManager.beginTransaction()
+                .replace(
+                    R.id.activity_main_fragment_container,
+                    fragmentInstance
+                )
+                .addToBackStack(null)
+                .commit()
         }
     }
 
     companion object {
         fun newInstance() = ArticlesFragment()
-        const val TAG = "ArticlesFragment"
     }
 }

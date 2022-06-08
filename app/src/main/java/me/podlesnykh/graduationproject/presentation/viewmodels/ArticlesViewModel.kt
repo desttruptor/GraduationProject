@@ -28,7 +28,7 @@ class ArticlesViewModel : ViewModel() {
     fun getArticles() {
         viewModelScope.launch {
             val response = useCase.execute(
-                EverythingSearchSettingsModel(keyword = "Bitcoin"),
+                EverythingSearchSettingsModel(keyword = "Ukraine"),
                 true
             )
             when (response) {

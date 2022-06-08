@@ -5,9 +5,10 @@
     <string name="search_keywords">Search keywords</string>
     <string name="domains_comma_separated">Domains, comma-separated:</string>
     <string name="exclude_domains_comma_separated">Exclude domains, comma-separated:</string>
-    <string name="eg_bbc_co_uk">Eg: bbc.co.uk</string>
+    <string name="eg_bbc_co_uk">Eg: bbc.co.uk,lenta.ru</string>
     <string name="eg_rt_ru">Eg: rt.ru</string>
     <string name="sources">Sources, comma-separated:</string>
+    <string name="pick_sources">Pick sources you want to search</string>
     <string name="search_in">Search in:</string>
     <string name="title">Title</string>
     <string name="description">Description</string>
@@ -28,6 +29,7 @@
     <string name="category_to_get_headlines_for">Category to get headlines for</string>
     <string name="unofficial_client">Unofficial client</string>
     <string name="top_headlines">Top headlines</string>
+    <string name="select_date">Select date</string>
 
     <string-array name="languages">
         <item>ar</item>

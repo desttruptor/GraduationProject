@@ -17,8 +17,7 @@ class MainActivity : BaseActivity() {
         supportFragmentManager.beginTransaction()
             .replace(
                 binding.activityMainFragmentContainer.id,
-                ArticlesFragment.newInstance(),
-                ArticlesFragment.TAG
+                ArticlesFragment.newInstance()
             )
             .commit()
     }
