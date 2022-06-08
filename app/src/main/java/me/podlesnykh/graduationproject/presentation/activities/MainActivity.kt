@@ -15,7 +15,11 @@ class MainActivity : BaseActivity() {
         setContentView(binding.root)
 
         supportFragmentManager.beginTransaction()
-            .add(binding.activityMainFragmentContainer.id, ArticlesFragment.newInstance())
+            .replace(
+                binding.activityMainFragmentContainer.id,
+                ArticlesFragment.newInstance(),
+                ArticlesFragment.TAG
+            )
             .commit()
     }
 }

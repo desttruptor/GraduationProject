@@ -4,9 +4,10 @@
     package="me.podlesnykh.graduationproject">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
-        android:name=".GraduationProjectApplication"
+        android:name=".presentation.application.GraduationProjectApplication"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
@@ -18,10 +19,12 @@
         tools:targetApi="31">
         <activity
             android:name=".presentation.activities.MainActivity"
+            android:exported="true" />
+        <activity
+            android:name=".presentation.activities.StartupActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>

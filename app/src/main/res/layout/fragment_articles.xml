@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<androidx.coordinatorlayout.widget.CoordinatorLayout android:id="@+id/articles_bottom_coordinator_layout"
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/articles_bottom_coordinator_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -11,7 +11,6 @@
         android:id="@+id/articles_recycler_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginBottom="?actionBarSize"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -31,21 +30,47 @@
             app:layout_scrollFlags="scroll|enterAlways" />
     </com.google.android.material.appbar.AppBarLayout>
 
-    <com.google.android.material.bottomappbar.BottomAppBar
-        android:id="@+id/articles_bottom_navbar"
-        style="@style/Widget.MaterialComponents.BottomAppBar.Colored"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
-        app:navigationIcon="@drawable/ic_baseline_settings_24" />
-
     <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-        android:id="@+id/articles_floating_action_button"
+        android:id="@+id/search_floating_action_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="end|bottom"
+        android:layout_marginEnd="24dp"
+        android:layout_marginBottom="24dp"
         android:importantForAccessibility="no"
         android:text="@string/search"
+        android:textColor="@color/black"
         app:icon="@drawable/ic_baseline_search_24"
-        app:layout_anchor="@id/articles_bottom_navbar"
-        app:tint="@android:color/white" />
+        app:iconTint="@color/black"
+        app:layout_behavior="com.google.android.material.behavior.HideBottomViewOnScrollBehavior" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/search_top_headlines_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end|bottom"
+        android:layout_marginEnd="24dp"
+        android:layout_marginBottom="86dp"
+        android:clickable="false"
+        android:importantForAccessibility="no"
+        android:text="@string/top_headlines"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        android:visibility="invisible"
+        app:layout_behavior="com.google.android.material.behavior.HideBottomViewOnScrollBehavior" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/search_everything_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end|bottom"
+        android:layout_marginEnd="24dp"
+        android:layout_marginBottom="146dp"
+        android:clickable="false"
+        android:importantForAccessibility="no"
+        android:text="@string/everything"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        android:visibility="invisible"
+        app:layout_behavior="com.google.android.material.behavior.HideBottomViewOnScrollBehavior" />
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

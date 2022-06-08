@@ -1,4 +1,4 @@
-package me.podlesnykh.graduationproject
+package me.podlesnykh.graduationproject.presentation.application
 
 import android.app.Application
 import me.podlesnykh.graduationproject.di.application.AppComponent

@@ -5,13 +5,13 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="8dp"
-    android:animateLayoutChanges="true"
     android:translationZ="4dp"
     app:cardCornerRadius="5dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:animateLayoutChanges="true">
 
         <ImageView
             android:id="@+id/article_item_image_view"
@@ -31,6 +31,7 @@
             android:id="@+id/article_item_title_text_view"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:layout_marginBottom="12dp"
             android:ellipsize="end"
@@ -48,6 +49,7 @@
             android:id="@+id/article_item_expand_button"
             android:layout_width="40dp"
             android:layout_height="30dp"
+            android:layout_marginEnd="8dp"
             android:importantForAccessibility="no"
             app:layout_constraintBottom_toBottomOf="@+id/article_item_title_text_view"
             app:layout_constraintEnd_toEndOf="@id/article_item_image_view"
@@ -87,7 +89,6 @@
                     android:layout_marginBottom="8dp"
                     android:text="@string/watch_full_article"
                     android:textAllCaps="false"
-                    android:textColor="@color/black"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="@id/article_item_details_text_view"
                     app:layout_constraintStart_toStartOf="parent"

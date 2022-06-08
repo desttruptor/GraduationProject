@@ -27,7 +27,8 @@ class ArticlesListAdapter(
         LayoutInflater.from(parent.context).inflate(R.layout.articles_list_item, parent, false)
     )
 
-    override fun onBindViewHolder(holder: ArticlesListViewHolder, position: Int) = holder.bind(displayedList[position])
+    override fun onBindViewHolder(holder: ArticlesListViewHolder, position: Int) =
+        holder.bind(displayedList[position])
 
     override fun getItemCount() = displayedList.size
 
@@ -37,10 +38,12 @@ class ArticlesListAdapter(
             it.dispatchUpdatesTo(this)
         }
 
-    inner class ArticlesListViewHolder(recyclerListItem: View) : RecyclerView.ViewHolder(recyclerListItem) {
+    inner class ArticlesListViewHolder(recyclerListItem: View) :
+        RecyclerView.ViewHolder(recyclerListItem) {
         private val recyclerListItemBinding = ArticlesListItemBinding.bind(recyclerListItem)
         private var isExpandableBlockVisible = false
-        private val expandableBlockVisibility get() = if (isExpandableBlockVisible) View.VISIBLE else View.GONE
+        private val expandableBlockVisibility
+            get() = if (isExpandableBlockVisible) View.VISIBLE else View.GONE
         private val animationOnExpand =
             RotateAnimation(
                 0f,
@@ -50,7 +53,7 @@ class ArticlesListAdapter(
                 Animation.RELATIVE_TO_SELF,
                 0.5f
             ).apply {
-                duration = 100
+                duration = 200
                 interpolator = LinearInterpolator()
                 repeatCount = 0
                 fillAfter = true
@@ -59,13 +62,13 @@ class ArticlesListAdapter(
         private val animationOnCollapse =
             RotateAnimation(
                 180f,
-                360f,
+                0f,
                 Animation.RELATIVE_TO_SELF,
                 0.5f,
                 Animation.RELATIVE_TO_SELF,
                 0.5f
             ).apply {
-                duration = 100
+                duration = 160
                 interpolator = LinearInterpolator()
                 repeatCount = 0
                 fillAfter = true
@@ -73,7 +76,9 @@ class ArticlesListAdapter(
 
         fun bind(articleModel: ArticleModel) {
             with(recyclerListItemBinding) {
-                Glide.with(articleItemImageView.context).load(articleModel.urlToImage).into(articleItemImageView)
+                Glide.with(articleItemImageView.context)
+                    .load(articleModel.urlToImage)
+                    .into(articleItemImageView)
                 articleItemTitleTextView.text = articleModel.title
                 articleItemDetailsTextView.text = articleModel.description
                 articleItemExpandButton.setImageDrawable(
@@ -83,14 +88,16 @@ class ArticlesListAdapter(
                     )
                 )
                 articleItemExpandButton.setOnClickListener(::changeBlockVisibility)
-                recyclerListItemBinding.articleItemDetailsScrollView.visibility = expandableBlockVisibility
+                recyclerListItemBinding.articleItemDetailsScrollView.visibility =
+                    expandableBlockVisibility
                 articleItemSeeDetailsButton.setOnClickListener(onWatchFullArticleClickCallback)
             }
         }
 
         private fun changeBlockVisibility(view: View) {
             isExpandableBlockVisible = !isExpandableBlockVisible
-            recyclerListItemBinding.articleItemDetailsScrollView.visibility = expandableBlockVisibility
+            recyclerListItemBinding.articleItemDetailsScrollView.visibility =
+                expandableBlockVisibility
             view.startAnimation(
                 if (isExpandableBlockVisible)
                     animationOnExpand

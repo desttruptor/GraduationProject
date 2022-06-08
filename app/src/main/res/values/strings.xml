@@ -26,6 +26,8 @@
     <string name="search_everything">Search everything</string>
     <string name="country_to_get_headlines_for">Country to get headlines for</string>
     <string name="category_to_get_headlines_for">Category to get headlines for</string>
+    <string name="unofficial_client">Unofficial client</string>
+    <string name="top_headlines">Top headlines</string>
 
     <string-array name="languages">
         <item>ar</item>
