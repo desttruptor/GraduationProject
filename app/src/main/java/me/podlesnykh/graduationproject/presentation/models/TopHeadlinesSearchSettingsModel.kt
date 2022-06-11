@@ -1,5 +1,7 @@
 package me.podlesnykh.graduationproject.presentation.models
 
+import java.io.Serializable
+
 /**
  * Model to put together search query parameters
  */
@@ -10,4 +12,4 @@ data class TopHeadlinesSearchSettingsModel(
     val q: String?,
     val pageSize: String?,
     val page: String?
-)
+) : Serializable

@@ -201,41 +201,30 @@
                 android:orientation="vertical"
                 app:layout_constraintGuide_percent=".5" />
 
-            <TextView
-                android:id="@+id/search_date_from_label"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="6dp"
-                android:text="@string/from"
-                app:layout_constraintStart_toStartOf="@+id/search_exclude_domains_badge"
-                app:layout_constraintTop_toBottomOf="@+id/search_exclude_domains_text_input" />
-
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/search_date_from_text_input"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
                 android:layout_marginEnd="6dp"
-                android:hint="@string/date_from_hint"
+                android:clickable="false"
+                android:focusable="false"
+                android:focusableInTouchMode="false"
+                android:hint="@string/from_date"
                 app:layout_constraintEnd_toStartOf="@+id/search_guideline"
-                app:layout_constraintStart_toStartOf="@id/search_date_from_label"
-                app:layout_constraintTop_toBottomOf="@id/search_date_from_label"
+                app:layout_constraintStart_toStartOf="@id/search_exclude_domains_badge"
+                app:layout_constraintTop_toBottomOf="@id/search_exclude_domains_text_input"
                 app:startIconDrawable="@drawable/ic_baseline_date_range_24">
 
                 <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/search_date_from_edit_text"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="text" />
+                    android:focusable="false"
+                    android:focusableInTouchMode="false"
+                    android:inputType="none" />
             </com.google.android.material.textfield.TextInputLayout>
-
-            <TextView
-                android:id="@+id/search_date_to_label"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="6dp"
-                android:text="@string/to"
-                app:layout_constraintStart_toStartOf="@+id/search_guideline"
-                app:layout_constraintTop_toTopOf="@+id/search_date_from_label" />
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/search_date_to_text_input"
@@ -243,16 +232,23 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="6dp"
-                android:hint="@string/date_to_hint"
+                android:layout_marginTop="6dp"
+                android:clickable="false"
+                android:focusable="false"
+                android:focusableInTouchMode="false"
+                android:hint="@string/to_date"
                 app:layout_constraintEnd_toEndOf="@+id/search_queries_text_input"
                 app:layout_constraintStart_toStartOf="@id/search_guideline"
-                app:layout_constraintTop_toBottomOf="@id/search_date_to_label"
+                app:layout_constraintTop_toBottomOf="@+id/search_exclude_domains_text_input"
                 app:startIconDrawable="@drawable/ic_baseline_date_range_24">
 
                 <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/search_date_to_edit_text"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="text" />
+                    android:focusable="false"
+                    android:focusableInTouchMode="false"
+                    android:inputType="none" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -280,7 +276,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="6dp"
-                android:text="@string/search_in"
+                android:text="@string/sort_by"
                 app:layout_constraintStart_toStartOf="@+id/search_language_drop_down_menu"
                 app:layout_constraintTop_toBottomOf="@id/search_language_drop_down_menu" />
 

@@ -7,8 +7,10 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import me.podlesnykh.graduationproject.domain.Response
 import me.podlesnykh.graduationproject.domain.usecases.GetEverythingUseCase
+import me.podlesnykh.graduationproject.domain.usecases.GetTopHeadlinesUseCase
 import me.podlesnykh.graduationproject.presentation.models.ArticleModel
 import me.podlesnykh.graduationproject.presentation.models.EverythingSearchSettingsModel
+import me.podlesnykh.graduationproject.presentation.models.TopHeadlinesSearchSettingsModel
 import javax.inject.Inject
 
 /**
@@ -17,7 +19,10 @@ import javax.inject.Inject
 class ArticlesViewModel : ViewModel() {
 
     @Inject
-    lateinit var useCase: GetEverythingUseCase
+    lateinit var everythingUseCase: GetEverythingUseCase
+
+    @Inject
+    lateinit var topHeadlinesUseCase: GetTopHeadlinesUseCase
 
     val articlesListLiveData: LiveData<List<ArticleModel>> get() = _articlesListLiveData
     val errorDialogLiveData: LiveData<String> get() = _errorDialogLiveData
@@ -25,10 +30,23 @@ class ArticlesViewModel : ViewModel() {
     private val _articlesListLiveData: MutableLiveData<List<ArticleModel>> = MutableLiveData()
     private val _errorDialogLiveData: MutableLiveData<String> = MutableLiveData()
 
-    fun getArticles() {
+    fun getEverythingArticlesForce(settingsModel: EverythingSearchSettingsModel) {
         viewModelScope.launch {
-            val response = useCase.execute(
-                EverythingSearchSettingsModel(keyword = "Ukraine"),
+            val response = everythingUseCase.execute(
+                settingsModel,
+                true
+            )
+            when (response) {
+                is Response.Success -> _articlesListLiveData.value = response.articlesData
+                is Response.Error -> _errorDialogLiveData.value = response.t?.localizedMessage
+            }
+        }
+    }
+
+    fun getTopHeadlinesArticlesForce(settingsModel: TopHeadlinesSearchSettingsModel) {
+        viewModelScope.launch {
+            val response = topHeadlinesUseCase.execute(
+                settingsModel,
                 true
             )
             when (response) {

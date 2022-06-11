@@ -18,7 +18,6 @@ class MainActivity : BaseActivity() {
             .replace(
                 binding.activityMainFragmentContainer.id,
                 ArticlesFragment.newInstance()
-            )
-            .commit()
+            ).commit()
     }
 }

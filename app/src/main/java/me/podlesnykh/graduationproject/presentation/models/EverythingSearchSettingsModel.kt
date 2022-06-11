@@ -1,5 +1,7 @@
 package me.podlesnykh.graduationproject.presentation.models
 
+import java.io.Serializable
+
 /**
  * Model to put together search query parameters
  */
@@ -15,4 +17,4 @@ data class EverythingSearchSettingsModel(
     val sortBy: String? = null,
     val pageSize: String? = null,
     val page: String? = null
-)
+) : Serializable

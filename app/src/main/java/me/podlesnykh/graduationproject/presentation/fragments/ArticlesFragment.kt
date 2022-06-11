@@ -16,6 +16,8 @@ import me.podlesnykh.graduationproject.R
 import me.podlesnykh.graduationproject.databinding.FragmentArticlesBinding
 import me.podlesnykh.graduationproject.presentation.adapters.ArticlesListAdapter
 import me.podlesnykh.graduationproject.presentation.common.fragments.BaseFragment
+import me.podlesnykh.graduationproject.presentation.models.EverythingSearchSettingsModel
+import me.podlesnykh.graduationproject.presentation.models.TopHeadlinesSearchSettingsModel
 import me.podlesnykh.graduationproject.presentation.viewmodels.ArticlesViewModel
 
 class ArticlesFragment : BaseFragment() {
@@ -25,6 +27,8 @@ class ArticlesFragment : BaseFragment() {
     private var _binding: FragmentArticlesBinding? = null
     private val binding get() = _binding!!
     private var isFabOpen = false
+    private var everythingSearchModel: EverythingSearchSettingsModel? = null
+    private var topHeadlinesSearchModel: TopHeadlinesSearchSettingsModel? = null
 
     private val articlesListAdapter = ArticlesListAdapter(::onWatchFullArticleClicked).apply {
         stateRestorationPolicy = RecyclerView.Adapter.StateRestorationPolicy.ALLOW
@@ -36,12 +40,12 @@ class ArticlesFragment : BaseFragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentArticlesBinding.inflate(inflater, container, false)
+        setupArgumentsAndLoadNews()
         setupToolbar()
         setupRecyclerView()
         setupFab()
         setupViewModel()
         appComponent.inject(viewModel)
-        viewModel.getArticles()
         return binding.root
     }
 
@@ -53,6 +57,21 @@ class ArticlesFragment : BaseFragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    private fun setupArgumentsAndLoadNews() {
+        val arguments = requireArguments()
+        val everythingArguments = arguments.getSerializable(EVERYTHING_SETTINGS_MODEL_KEY)
+        val topHeadlinesArguments = arguments.getSerializable(TOP_HEADLINES_MODEL_KEY)
+        if (everythingArguments != null) {
+            everythingSearchModel = everythingArguments as? EverythingSearchSettingsModel
+                ?: error("Error cast everything search model")
+            viewModel.getEverythingArticlesForce(everythingSearchModel!!)
+        } else if (topHeadlinesArguments != null) {
+            topHeadlinesSearchModel = topHeadlinesArguments as? TopHeadlinesSearchSettingsModel
+                ?: error("Error cast top headlines search model")
+            viewModel.getTopHeadlinesArticlesForce(topHeadlinesSearchModel!!)
+        }
     }
 
     private fun setupToolbar() {
@@ -154,5 +173,24 @@ class ArticlesFragment : BaseFragment() {
 
     companion object {
         fun newInstance() = ArticlesFragment()
+
+        fun newInstance(model: EverythingSearchSettingsModel): ArticlesFragment {
+            val bundle = Bundle()
+            bundle.putSerializable(EVERYTHING_SETTINGS_MODEL_KEY, model)
+            val fragment = ArticlesFragment()
+            fragment.arguments = bundle
+            return fragment
+        }
+
+        fun newInstance(model: TopHeadlinesSearchSettingsModel): ArticlesFragment {
+            val bundle = Bundle()
+            bundle.putSerializable(TOP_HEADLINES_MODEL_KEY, model)
+            val fragment = ArticlesFragment()
+            fragment.arguments = bundle
+            return fragment
+        }
+
+        private const val EVERYTHING_SETTINGS_MODEL_KEY = "settingsModel"
+        private const val TOP_HEADLINES_MODEL_KEY = "topHeadlinesModel"
     }
 }

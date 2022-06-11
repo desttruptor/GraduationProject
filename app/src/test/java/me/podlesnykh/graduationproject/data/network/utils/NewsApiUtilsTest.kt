@@ -1,8 +1,8 @@
 package me.podlesnykh.graduationproject.network.utils
 
 import com.google.common.truth.Truth
-import me.podlesnykh.graduationproject.data.network.utils.NewsApiUtils.encodeUrl
-import me.podlesnykh.graduationproject.data.network.utils.NewsApiUtils.searchIn
+import me.podlesnykh.graduationproject.presentation.common.utils.NewsApiUtils.encodeUrl
+import me.podlesnykh.graduationproject.presentation.common.utils.NewsApiUtils.searchIn
 import org.junit.Test
 
 /**
@@ -19,21 +19,21 @@ class NewsApiUtilsTest {
     @Test
     fun searchInTest_none() {
         Truth.assertThat(
-            searchIn(title = false, description = false, content = false)
+            searchIn(mutableListOf(false, false, false))
         ).isEqualTo("")
     }
 
     @Test
     fun searchInTest_TitleDescription() {
         Truth.assertThat(
-            searchIn(content = false)
+            searchIn(mutableListOf(true, true, false))
         ).isEqualTo("title,description")
     }
 
     @Test
     fun searchInTest_All() {
         Truth.assertThat(
-            searchIn()
+            searchIn(mutableListOf(true, true, true))
         ).isEqualTo("title,description,content")
     }
 }

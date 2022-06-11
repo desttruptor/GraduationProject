@@ -36,6 +36,6 @@ class SearchTopHeadlinesFragment : BaseFragment() {
     }
 
     companion object {
-        fun newInstance() = SearchEverythingFragment()
+        fun newInstance() = SearchTopHeadlinesFragment()
     }
 }

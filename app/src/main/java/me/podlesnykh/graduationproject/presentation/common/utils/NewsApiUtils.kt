@@ -1,6 +1,5 @@
-package me.podlesnykh.graduationproject.data.network.utils
+package me.podlesnykh.graduationproject.presentation.common.utils
 
-import me.podlesnykh.graduationproject.data.network.utils.NewsApiUtils.SortBy.PUBLISHED_AT
 import java.net.URLEncoder
 import java.nio.charset.StandardCharsets
 
@@ -20,32 +19,18 @@ object NewsApiUtils {
      *
      * @return [String] with params separated by comma
      */
-    fun searchIn(
-        title: Boolean = true,
-        description: Boolean = true,
-        content: Boolean = true
-    ): String {
+    fun searchIn(keys: List<Boolean>): String {
         val sb = StringBuilder()
         val vals = listOf("title", "description", "content")
-        val keys = mutableListOf(title, description, content)
         keys.forEachIndexed { index, key ->
             if (key) {
                 sb.append(vals[index])
-                keys[index] = false
-                sb.append(if (keys.contains(true)) "," else "")
             }
         }
-
-        return sb.toString()
-    }
-
-    /**
-     * Values to define the order to sort the articles
-     * [PUBLISHED_AT] is the default option
-     */
-    enum class SortBy(val value: String) {
-        RELEVANCY("relevancy"),
-        POPULARITY("popularity"),
-        PUBLISHED_AT("publishedAt")
+        return if (sb.toString().elementAt(sb.toString().length - 1) == ',') {
+            sb.toString().substring(0, sb.toString().length - 2)
+        } else {
+            sb.toString()
+        }
     }
 }
