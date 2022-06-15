@@ -1,5 +1,6 @@
 package me.podlesnykh.graduationproject.presentation.adapters
 
+import android.graphics.drawable.Drawable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,6 +11,10 @@ import androidx.appcompat.content.res.AppCompatResources
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.DataSource
+import com.bumptech.glide.load.engine.GlideException
+import com.bumptech.glide.request.RequestListener
+import com.bumptech.glide.request.target.Target
 import me.podlesnykh.graduationproject.R
 import me.podlesnykh.graduationproject.databinding.ArticlesListItemBinding
 import me.podlesnykh.graduationproject.presentation.models.ArticleModel
@@ -18,7 +23,7 @@ import me.podlesnykh.graduationproject.presentation.models.ArticleModel
  * [RecyclerView.Adapter] for list of articles displayed in fragment
  */
 class ArticlesListAdapter(
-    private val onWatchFullArticleClickCallback: (View) -> Unit
+    private val onWatchFullArticleClickCallback: (View, String) -> Unit
 ) : RecyclerView.Adapter<ArticlesListAdapter.ArticlesListViewHolder>() {
 
     private var displayedList: List<ArticleModel> = emptyList()
@@ -78,6 +83,31 @@ class ArticlesListAdapter(
             with(recyclerListItemBinding) {
                 Glide.with(articleItemImageView.context)
                     .load(articleModel.urlToImage)
+                    .listener(object : RequestListener<Drawable> {
+                        override fun onLoadFailed(
+                            e: GlideException?,
+                            model: Any?,
+                            target: Target<Drawable>?,
+                            isFirstResource: Boolean
+                        ): Boolean {
+                            articleItemProgressBar.visibility = View.GONE
+                            articlesItemErrorLabel.visibility = View.VISIBLE
+                            return false
+                        }
+
+                        override fun onResourceReady(
+                            resource: Drawable?,
+                            model: Any?,
+                            target: Target<Drawable>?,
+                            dataSource: DataSource?,
+                            isFirstResource: Boolean
+                        ): Boolean {
+                            articleItemProgressBar.visibility = View.GONE
+                            articlesItemErrorLabel.visibility = View.GONE
+                            return false
+                        }
+
+                    })
                     .into(articleItemImageView)
                 articleItemTitleTextView.text = articleModel.title
                 articleItemDetailsTextView.text = articleModel.description
@@ -90,7 +120,9 @@ class ArticlesListAdapter(
                 articleItemExpandButton.setOnClickListener(::changeBlockVisibility)
                 recyclerListItemBinding.articleItemDetailsScrollView.visibility =
                     expandableBlockVisibility
-                articleItemSeeDetailsButton.setOnClickListener(onWatchFullArticleClickCallback)
+                articleItemSeeDetailsButton.setOnClickListener {
+                    onWatchFullArticleClickCallback.invoke(it, articleModel.url)
+                }
             }
         }
 

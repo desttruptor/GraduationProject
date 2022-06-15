@@ -1,5 +1,7 @@
 package me.podlesnykh.graduationproject.domain.usecases
 
+import com.google.gson.Gson
+import me.podlesnykh.graduationproject.data.network.models.ErrorResponse
 import me.podlesnykh.graduationproject.data.repository.NewsRepository
 import me.podlesnykh.graduationproject.domain.Response
 import me.podlesnykh.graduationproject.domain.mappers.DatabaseResponseMappers
@@ -11,30 +13,37 @@ class GetTopHeadlinesUseCase(
 ) {
     suspend fun execute(
         settingsModel: TopHeadlinesSearchSettingsModel,
+        getFromDb: Boolean,
         isFirstLoad: Boolean
     ): Response {
-        return if (isFirstLoad) {
-            getFromNetwork(settingsModel)
+        return if (getFromDb) {
+            getFromNetwork(settingsModel, isFirstLoad)
         } else {
-            getFromDatabase(settingsModel)
+            getFromDatabase()
         }
     }
 
-    private suspend fun getFromDatabase(settingsModel: TopHeadlinesSearchSettingsModel): Response {
+    private suspend fun getFromDatabase(): Response {
         return try {
-            repository.getTopHeadlinesFromLocal()?.let {
+            repository.getTopHeadlinesFromLocal().let {
                 Response.Success(
                     DatabaseResponseMappers.mapArticlesEntityListToArticlesModelList(it),
                     null
                 )
-            } ?: getFromNetwork(settingsModel)
+            }
         } catch (e: Exception) {
             Response.Error(e, null)
         }
     }
 
-    private suspend fun getFromNetwork(settingsModel: TopHeadlinesSearchSettingsModel): Response {
+    private suspend fun getFromNetwork(
+        settingsModel: TopHeadlinesSearchSettingsModel,
+        isFirstLoad: Boolean
+    ): Response {
         try {
+            if (isFirstLoad) {
+                repository.deleteTopHeadlines()
+            }
             val fromNetwork = repository.getTopHeadlinesFromNetwork(
                 settingsModel.country,
                 settingsModel.category,
@@ -49,7 +58,15 @@ class GetTopHeadlinesUseCase(
                 repository.saveTopHeadlinesToLocal(articlesList)
                 Response.Success(articlesList, null)
             } else {
-                Response.Error(null, fromNetwork.code())
+                try {
+                    val serverError = Gson().fromJson(
+                        fromNetwork.errorBody()?.string(),
+                        ErrorResponse::class.java
+                    )
+                    Response.Error(null, serverError)
+                } catch (e: Exception) {
+                    Response.Error(e, null)
+                }
             }
         } catch (e: Exception) {
             return Response.Error(e, null)

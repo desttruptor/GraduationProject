@@ -17,7 +17,14 @@ class MainActivity : BaseActivity() {
         supportFragmentManager.beginTransaction()
             .replace(
                 binding.activityMainFragmentContainer.id,
-                ArticlesFragment.newInstance()
-            ).commit()
+                ArticlesFragment.newInstance(),
+                ArticlesFragment.TAG
+            )
+            .commit()
+    }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+        supportFragmentManager.fragments.ifEmpty { finish() }
     }
 }

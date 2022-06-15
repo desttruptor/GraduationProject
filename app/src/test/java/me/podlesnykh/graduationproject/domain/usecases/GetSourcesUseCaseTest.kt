@@ -7,6 +7,7 @@ import io.mockk.mockk
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import me.podlesnykh.graduationproject.common.ResponseTestUtils
+import me.podlesnykh.graduationproject.data.network.models.ErrorResponse
 import me.podlesnykh.graduationproject.data.repository.NewsRepository
 import me.podlesnykh.graduationproject.domain.Response
 import me.podlesnykh.graduationproject.presentation.models.SourcesSearchSettingsModel
@@ -28,6 +29,7 @@ class GetSourcesUseCaseTest {
     private val settingsModel = SourcesSearchSettingsModel(
         null, null, null
     )
+    private val serverError = ErrorResponse(code = "1", message = "1", status = "1")
 
     @Test
     fun testExecute_success_reloadDataForce() = runTest {
@@ -103,7 +105,7 @@ class GetSourcesUseCaseTest {
             .isEqualTo(
                 Response.Error(
                     null,
-                    404
+                    null
                 )
             )
     }
@@ -131,7 +133,7 @@ class GetSourcesUseCaseTest {
             .isEqualTo(
                 Response.Error(
                     null,
-                    404
+                    null
                 )
             )
     }

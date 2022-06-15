@@ -1,5 +1,7 @@
 package me.podlesnykh.graduationproject.domain.usecases
 
+import com.google.gson.Gson
+import me.podlesnykh.graduationproject.data.network.models.ErrorResponse
 import me.podlesnykh.graduationproject.data.repository.NewsRepository
 import me.podlesnykh.graduationproject.domain.Response
 import me.podlesnykh.graduationproject.domain.mappers.DatabaseResponseMappers.mapArticlesEntityListToArticlesModelList
@@ -14,30 +16,37 @@ class GetEverythingUseCase(
 ) {
     suspend fun execute(
         settingsModel: EverythingSearchSettingsModel,
+        getFromDb: Boolean,
         isFirstLoad: Boolean
     ): Response {
-        return if (isFirstLoad) {
-            getFromNetwork(settingsModel)
+        return if (getFromDb) {
+            getFromDatabase()
         } else {
-            getFromDatabase(settingsModel)
+            getFromNetwork(settingsModel, isFirstLoad)
         }
     }
 
-    private suspend fun getFromDatabase(settingsModel: EverythingSearchSettingsModel): Response {
+    private suspend fun getFromDatabase(): Response {
         return try {
-            repository.getEverythingFromLocal()?.let {
+            repository.getEverythingFromLocal().let {
                 Response.Success(
                     mapArticlesEntityListToArticlesModelList(it),
                     null
                 )
-            } ?: getFromNetwork(settingsModel)
+            }
         } catch (e: Exception) {
             Response.Error(e, null)
         }
     }
 
-    private suspend fun getFromNetwork(settingsModel: EverythingSearchSettingsModel): Response {
+    private suspend fun getFromNetwork(
+        settingsModel: EverythingSearchSettingsModel,
+        isFirstLoad: Boolean
+    ): Response {
         try {
+            if (isFirstLoad) {
+                repository.deleteEverything()
+            }
             val fromNetwork = repository.getEverythingFromNetwork(
                 settingsModel.keyword,
                 settingsModel.searchIn,
@@ -56,7 +65,15 @@ class GetEverythingUseCase(
                 repository.saveEverythingToLocal(articlesList)
                 Response.Success(articlesList, null)
             } else {
-                Response.Error(null, fromNetwork.code())
+                try {
+                    val serverError = Gson().fromJson(
+                        fromNetwork.errorBody()?.string(),
+                        ErrorResponse::class.java
+                    )
+                    Response.Error(null, serverError)
+                } catch (e: Exception) {
+                    Response.Error(e, null)
+                }
             }
         } catch (e: Exception) {
             return Response.Error(e, null)

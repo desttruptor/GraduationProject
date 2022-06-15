@@ -11,5 +11,5 @@ data class TopHeadlinesSearchSettingsModel(
     val sources: String?,
     val q: String?,
     val pageSize: String?,
-    val page: String?
+    var page: String?
 ) : Serializable

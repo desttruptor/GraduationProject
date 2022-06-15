@@ -1,8 +1,8 @@
 package me.podlesnykh.graduationproject.data.repository
 
-import me.podlesnykh.graduationproject.data.database.entities.EverythingEntity
-import me.podlesnykh.graduationproject.data.database.entities.SourcesEntity
-import me.podlesnykh.graduationproject.data.database.entities.TopHeadlinesEntity
+import me.podlesnykh.graduationproject.data.database.entities.Everything
+import me.podlesnykh.graduationproject.data.database.entities.Sources
+import me.podlesnykh.graduationproject.data.database.entities.TopHeadlines
 import me.podlesnykh.graduationproject.data.network.models.ArticlesResponse
 import me.podlesnykh.graduationproject.data.network.models.SourcesResponse
 import me.podlesnykh.graduationproject.presentation.models.ArticleModel
@@ -79,19 +79,19 @@ interface NewsRepository {
     ): Response<SourcesResponse>
 
     /**
-     * @return [List] of [EverythingEntity] from database
+     * @return [List] of [Everything] from database
      */
-    suspend fun getEverythingFromLocal(): List<EverythingEntity>?
+    suspend fun getEverythingFromLocal(): List<Everything>
 
     /**
-     * @return [List] of [TopHeadlinesEntity] from database
+     * @return [List] of [TopHeadlines] from database
      */
-    suspend fun getTopHeadlinesFromLocal(): List<TopHeadlinesEntity>?
+    suspend fun getTopHeadlinesFromLocal(): List<TopHeadlines>
 
     /**
-     * @return [List] of [SourcesEntity] from database
+     * @return [List] of [Sources] from database
      */
-    suspend fun getSourcesFromLocal(): List<SourcesEntity>?
+    suspend fun getSourcesFromLocal(): List<Sources>
 
     /**
      * @param everythingList list of articles to insert

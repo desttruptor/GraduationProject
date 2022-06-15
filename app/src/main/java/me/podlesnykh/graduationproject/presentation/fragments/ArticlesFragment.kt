@@ -1,11 +1,15 @@
 package me.podlesnykh.graduationproject.presentation.fragments
 
+import android.content.Intent
 import android.content.res.Resources
+import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.res.ResourcesCompat
 import androidx.lifecycle.ViewModelProvider
@@ -16,6 +20,7 @@ import me.podlesnykh.graduationproject.R
 import me.podlesnykh.graduationproject.databinding.FragmentArticlesBinding
 import me.podlesnykh.graduationproject.presentation.adapters.ArticlesListAdapter
 import me.podlesnykh.graduationproject.presentation.common.fragments.BaseFragment
+import me.podlesnykh.graduationproject.presentation.models.ArticleModel
 import me.podlesnykh.graduationproject.presentation.models.EverythingSearchSettingsModel
 import me.podlesnykh.graduationproject.presentation.models.TopHeadlinesSearchSettingsModel
 import me.podlesnykh.graduationproject.presentation.viewmodels.ArticlesViewModel
@@ -29,6 +34,7 @@ class ArticlesFragment : BaseFragment() {
     private var isFabOpen = false
     private var everythingSearchModel: EverythingSearchSettingsModel? = null
     private var topHeadlinesSearchModel: TopHeadlinesSearchSettingsModel? = null
+    private val displayedArticlesList = mutableListOf<ArticleModel>()
 
     private val articlesListAdapter = ArticlesListAdapter(::onWatchFullArticleClicked).apply {
         stateRestorationPolicy = RecyclerView.Adapter.StateRestorationPolicy.ALLOW
@@ -40,12 +46,14 @@ class ArticlesFragment : BaseFragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentArticlesBinding.inflate(inflater, container, false)
-        setupArgumentsAndLoadNews()
-        setupToolbar()
+        setupToolbar(R.string.everything)
         setupRecyclerView()
         setupFab()
+
         setupViewModel()
         appComponent.inject(viewModel)
+
+        setupArgumentsAndLoadNews()
         return binding.root
     }
 
@@ -60,22 +68,25 @@ class ArticlesFragment : BaseFragment() {
     }
 
     private fun setupArgumentsAndLoadNews() {
-        val arguments = requireArguments()
-        val everythingArguments = arguments.getSerializable(EVERYTHING_SETTINGS_MODEL_KEY)
-        val topHeadlinesArguments = arguments.getSerializable(TOP_HEADLINES_MODEL_KEY)
+        val everythingArguments = arguments?.getSerializable(EVERYTHING_SETTINGS_MODEL_KEY)
+        val topHeadlinesArguments = arguments?.getSerializable(TOP_HEADLINES_MODEL_KEY)
         if (everythingArguments != null) {
             everythingSearchModel = everythingArguments as? EverythingSearchSettingsModel
                 ?: error("Error cast everything search model")
+            setupToolbar(R.string.everything)
             viewModel.getEverythingArticlesForce(everythingSearchModel!!)
         } else if (topHeadlinesArguments != null) {
             topHeadlinesSearchModel = topHeadlinesArguments as? TopHeadlinesSearchSettingsModel
                 ?: error("Error cast top headlines search model")
+            setupToolbar(R.string.top_headlines)
             viewModel.getTopHeadlinesArticlesForce(topHeadlinesSearchModel!!)
+        } else {
+            viewModel.getEverythingArticlesFromDb()
         }
     }
 
-    private fun setupToolbar() {
-        binding.articlesToolbar.title = context?.getString(R.string.everything)
+    private fun setupToolbar(titleRes: Int) {
+        binding.articlesToolbar.title = context?.getString(titleRes)
         binding.articlesToolbar.setTitleTextColor(
             ResourcesCompat.getColor(
                 this.resources,
@@ -103,8 +114,11 @@ class ArticlesFragment : BaseFragment() {
 
     private fun setupViewModel() {
         viewModel = ViewModelProvider(this)[ArticlesViewModel::class.java]
-        viewModel.articlesListLiveData.observe(viewLifecycleOwner, articlesListAdapter::submitList)
-        viewModel.errorDialogLiveData.observe(viewLifecycleOwner, ::showSnackBar)
+        viewModel.showProgressLiveData.observe(viewLifecycleOwner, ::showProgress)
+        viewModel.articlesListLiveData.observe(viewLifecycleOwner, ::onDataLoaded)
+        viewModel.errorSnackBarLiveData.observe(viewLifecycleOwner, ::showSnackBar)
+        viewModel.errorDialogLiveData.observe(viewLifecycleOwner, ::showErrorDialog)
+        viewModel.nothingFoundNotification.observe(viewLifecycleOwner, ::showErrorDialog)
     }
 
     private fun setupFab() {
@@ -116,15 +130,33 @@ class ArticlesFragment : BaseFragment() {
     }
 
     private fun onEndOfListReached() {
-        TODO("Implement next page loading")
+        if (arguments != null) {
+            Log.v("endOfList", "End of list reached")
+            if (everythingSearchModel != null) {
+                viewModel.getEverythingArticlesForceNextPage(everythingSearchModel!!)
+            } else {
+                viewModel.getTopHeadlinesArticlesForceNextPage(topHeadlinesSearchModel!!)
+            }
+        }
     }
 
-    private fun onWatchFullArticleClicked(view: View) {
-        TODO("Implement new intent sending")
+    private fun onWatchFullArticleClicked(view: View, url: String) {
+        val intent = Intent(Intent.ACTION_VIEW).apply {
+            data = Uri.parse(url)
+        }
+        startActivity(intent)
     }
 
     private fun showSnackBar(message: String) =
         Snackbar.make(binding.articlesRecyclerView, message, 5000).show()
+
+    private fun showErrorDialog(message: String) =
+        AlertDialog.Builder(requireContext())
+            .setTitle(R.string.server_error)
+            .setMessage(message)
+            .setPositiveButton("Ok") { dialogInterface, _ -> dialogInterface.dismiss() }
+            .create()
+            .show()
 
     private fun animateFab() {
         isFabOpen = !isFabOpen
@@ -145,6 +177,15 @@ class ArticlesFragment : BaseFragment() {
             binding.searchTopHeadlinesButton.isClickable = isFabOpen
             binding.searchEverythingButton.isClickable = isFabOpen
         }
+    }
+
+    private fun onDataLoaded(data: List<ArticleModel>) {
+        displayedArticlesList.addAll(data)
+        articlesListAdapter.submitList(displayedArticlesList)
+    }
+
+    private fun showProgress(show: Boolean) {
+        binding.articlesProgressBar.visibility = if (show) View.VISIBLE else View.GONE
     }
 
     inner class FabOnClickListener : View.OnClickListener {
@@ -192,5 +233,7 @@ class ArticlesFragment : BaseFragment() {
 
         private const val EVERYTHING_SETTINGS_MODEL_KEY = "settingsModel"
         private const val TOP_HEADLINES_MODEL_KEY = "topHeadlinesModel"
+
+        const val TAG = "articlesFragment"
     }
 }

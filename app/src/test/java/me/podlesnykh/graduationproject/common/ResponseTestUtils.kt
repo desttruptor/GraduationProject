@@ -1,8 +1,8 @@
 package me.podlesnykh.graduationproject.common
 
-import me.podlesnykh.graduationproject.data.database.entities.EverythingEntity
-import me.podlesnykh.graduationproject.data.database.entities.SourcesEntity
-import me.podlesnykh.graduationproject.data.database.entities.TopHeadlinesEntity
+import me.podlesnykh.graduationproject.data.database.entities.Everything
+import me.podlesnykh.graduationproject.data.database.entities.Sources
+import me.podlesnykh.graduationproject.data.database.entities.TopHeadlines
 import me.podlesnykh.graduationproject.data.network.models.*
 import me.podlesnykh.graduationproject.presentation.models.ArticleModel
 import me.podlesnykh.graduationproject.presentation.models.SourceModel
@@ -116,7 +116,7 @@ object ResponseTestUtils {
         )
 
     fun createDatabaseEverythingResponse() = listOf(
-        EverythingEntity(
+        Everything(
             numberInTable = 0,
             publishedAt = "2022-05-10T16:59:46Z",
             author = "Arielle Pardes",
@@ -127,7 +127,7 @@ object ResponseTestUtils {
             url = SAMPLE_URL,
             content = SAMPLE_TEXT
         ),
-        EverythingEntity(
+        Everything(
             numberInTable = 1,
             publishedAt = "2022-05-04T12:00:00Z",
             author = "Justine Calma",
@@ -141,7 +141,7 @@ object ResponseTestUtils {
     )
 
     fun createDatabaseTopHeadlinesResponse() = listOf(
-        TopHeadlinesEntity(
+        TopHeadlines(
             numberInTable = 0,
             publishedAt = "2022-05-10T16:59:46Z",
             author = "Arielle Pardes",
@@ -152,7 +152,7 @@ object ResponseTestUtils {
             url = SAMPLE_URL,
             content = SAMPLE_TEXT
         ),
-        TopHeadlinesEntity(
+        TopHeadlines(
             numberInTable = 1,
             publishedAt = "2022-05-04T12:00:00Z",
             author = "Justine Calma",
@@ -166,7 +166,7 @@ object ResponseTestUtils {
     )
 
     fun createDatabaseSourcesResponse() = listOf(
-        SourcesEntity(
+        Sources(
             numberInTable = 0,
             country = "au",
             name = "Australian Financial Review",
@@ -176,7 +176,7 @@ object ResponseTestUtils {
             category = "business",
             url = SAMPLE_URL
         ),
-        SourcesEntity(
+        Sources(
             numberInTable = 1,
             country = "us",
             name = "Bloomberg",

@@ -1,8 +1,8 @@
 package me.podlesnykh.graduationproject.domain.mappers
 
-import me.podlesnykh.graduationproject.data.database.entities.EverythingEntity
-import me.podlesnykh.graduationproject.data.database.entities.SourcesEntity
-import me.podlesnykh.graduationproject.data.database.entities.TopHeadlinesEntity
+import me.podlesnykh.graduationproject.data.database.entities.Everything
+import me.podlesnykh.graduationproject.data.database.entities.Sources
+import me.podlesnykh.graduationproject.data.database.entities.TopHeadlines
 import me.podlesnykh.graduationproject.presentation.models.ArticleModel
 import me.podlesnykh.graduationproject.presentation.models.SourceModel
 
@@ -12,7 +12,7 @@ import me.podlesnykh.graduationproject.presentation.models.SourceModel
 object DatabaseResponseMappers {
 
     @JvmName("mapEverything")
-    fun mapArticlesEntityListToArticlesModelList(inputList: List<EverythingEntity>) =
+    fun mapArticlesEntityListToArticlesModelList(inputList: List<Everything>) =
         inputList.map {
             ArticleModel(
                 publishedAt = it.publishedAt,
@@ -27,7 +27,7 @@ object DatabaseResponseMappers {
         }
 
     @JvmName("mapTopHeadlines")
-    fun mapArticlesEntityListToArticlesModelList(inputList: List<TopHeadlinesEntity>) =
+    fun mapArticlesEntityListToArticlesModelList(inputList: List<TopHeadlines>) =
         inputList.map {
             ArticleModel(
                 publishedAt = it.publishedAt,
@@ -41,7 +41,7 @@ object DatabaseResponseMappers {
             )
         }
 
-    fun mapSourcesEntityToSourcesModelList(inputList: List<SourcesEntity>) =
+    fun mapSourcesEntityToSourcesModelList(inputList: List<Sources>) =
         inputList.map {
             SourceModel(
                 country = it.country,

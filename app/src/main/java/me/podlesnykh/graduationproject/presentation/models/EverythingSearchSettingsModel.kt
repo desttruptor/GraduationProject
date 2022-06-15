@@ -16,5 +16,5 @@ data class EverythingSearchSettingsModel(
     val language: String? = null,
     val sortBy: String? = null,
     val pageSize: String? = null,
-    val page: String? = null
+    var page: String? = null
 ) : Serializable

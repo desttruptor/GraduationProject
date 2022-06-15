@@ -1,9 +1,9 @@
 package me.podlesnykh.graduationproject.data.repository
 
 import me.podlesnykh.graduationproject.data.database.NewsDao
-import me.podlesnykh.graduationproject.data.database.entities.EverythingEntity
-import me.podlesnykh.graduationproject.data.database.entities.SourcesEntity
-import me.podlesnykh.graduationproject.data.database.entities.TopHeadlinesEntity
+import me.podlesnykh.graduationproject.data.database.entities.Everything
+import me.podlesnykh.graduationproject.data.database.entities.Sources
+import me.podlesnykh.graduationproject.data.database.entities.TopHeadlines
 import me.podlesnykh.graduationproject.data.network.NewsApi
 import me.podlesnykh.graduationproject.data.network.models.ArticlesResponse
 import me.podlesnykh.graduationproject.data.network.models.SourcesResponse
@@ -73,13 +73,13 @@ class NewsRepositoryImpl(
             category, language, country
         )
 
-    override suspend fun getEverythingFromLocal(): List<EverythingEntity>? =
+    override suspend fun getEverythingFromLocal(): List<Everything> =
         newsDao.getAllEverything()
 
-    override suspend fun getTopHeadlinesFromLocal(): List<TopHeadlinesEntity>? =
+    override suspend fun getTopHeadlinesFromLocal(): List<TopHeadlines> =
         newsDao.getAllTopHeadlines()
 
-    override suspend fun getSourcesFromLocal(): List<SourcesEntity>? =
+    override suspend fun getSourcesFromLocal(): List<Sources> =
         newsDao.getAllSources()
 
     override suspend fun saveEverythingToLocal(everythingList: List<ArticleModel>) {

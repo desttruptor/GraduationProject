@@ -21,14 +21,17 @@ object NewsApiUtils {
      */
     fun searchIn(keys: List<Boolean>): String {
         val sb = StringBuilder()
-        val vals = listOf("title", "description", "content")
+        val vals = listOf("title,", "description,", "content,")
         keys.forEachIndexed { index, key ->
             if (key) {
                 sb.append(vals[index])
             }
         }
-        return if (sb.toString().elementAt(sb.toString().length - 1) == ',') {
-            sb.toString().substring(0, sb.toString().length - 2)
+        return if (
+            sb.isNotEmpty() &&
+            sb.toString().elementAt(sb.toString().length - 1) == ','
+        ) {
+            sb.toString().substring(0, sb.toString().length - 1)
         } else {
             sb.toString()
         }

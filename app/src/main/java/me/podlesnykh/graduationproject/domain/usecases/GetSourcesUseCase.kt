@@ -1,5 +1,7 @@
 package me.podlesnykh.graduationproject.domain.usecases
 
+import com.google.gson.Gson
+import me.podlesnykh.graduationproject.data.network.models.ErrorResponse
 import me.podlesnykh.graduationproject.data.repository.NewsRepository
 import me.podlesnykh.graduationproject.domain.Response
 import me.podlesnykh.graduationproject.domain.mappers.DatabaseResponseMappers
@@ -11,23 +13,23 @@ class GetSourcesUseCase(
 ) {
     suspend fun execute(
         settingsModel: SourcesSearchSettingsModel,
-        isFirstLoad: Boolean
+        getFromDb: Boolean
     ): Response {
-        return if (isFirstLoad) {
+        return if (getFromDb) {
             getFromNetwork(settingsModel)
         } else {
-            getFromDatabase(settingsModel)
+            getFromDatabase()
         }
     }
 
-    private suspend fun getFromDatabase(settingsModel: SourcesSearchSettingsModel): Response {
+    private suspend fun getFromDatabase(): Response {
         return try {
-            repository.getSourcesFromLocal()?.let {
+            repository.getSourcesFromLocal().let {
                 Response.Success(
                     null,
                     DatabaseResponseMappers.mapSourcesEntityToSourcesModelList(it)
                 )
-            } ?: getFromNetwork(settingsModel)
+            }
         } catch (e: Exception) {
             Response.Error(e, null)
         }
@@ -46,7 +48,15 @@ class GetSourcesUseCase(
                 repository.saveSourcesToLocal(sourcesList)
                 Response.Success(null, sourcesList)
             } else {
-                Response.Error(null, fromNetwork.code())
+                try {
+                    val serverError = Gson().fromJson(
+                        fromNetwork.errorBody()?.string(),
+                        ErrorResponse::class.java
+                    )
+                    Response.Error(null, serverError)
+                } catch (e: Exception) {
+                    Response.Error(e, null)
+                }
             }
         } catch (e: Exception) {
             return Response.Error(e, null)

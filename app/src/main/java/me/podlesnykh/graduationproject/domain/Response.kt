@@ -1,5 +1,6 @@
 package me.podlesnykh.graduationproject.domain
 
+import me.podlesnykh.graduationproject.data.network.models.ErrorResponse
 import me.podlesnykh.graduationproject.presentation.models.ArticleModel
 import me.podlesnykh.graduationproject.presentation.models.SourceModel
 
@@ -14,6 +15,6 @@ sealed class Response {
 
     data class Error(
         val t: Throwable?,
-        val serverCode: Int?
+        val serverError: ErrorResponse?
     ) : Response()
 }

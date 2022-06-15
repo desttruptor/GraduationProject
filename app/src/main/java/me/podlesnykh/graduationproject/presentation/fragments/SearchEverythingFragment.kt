@@ -7,8 +7,8 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.res.ResourcesCompat
 import androidx.core.text.htmlEncode
+import androidx.fragment.app.FragmentManager
 import com.google.android.material.datepicker.MaterialDatePicker
 import me.podlesnykh.graduationproject.R
 import me.podlesnykh.graduationproject.databinding.FragmentSearchEverythingBinding
@@ -56,25 +56,23 @@ class SearchEverythingFragment : BaseFragment() {
     }
 
     private fun onSearchButtonPressed(view: View) {
-        val queries = binding.searchQueriesTextInput.editText?.text
+        val queries = binding.searchQueriesTextInput.editText?.text.toString()
         val searchIn = binding.searchInChipGroup.checkedChipIds.map {
             when (it) {
-                binding.titleChip.id -> {
-                    true
-                }
-                binding.descriptionChip.id -> {
-                    true
-                }
-                binding.contentChip.id -> {
-                    true
-                }
+                binding.titleChip.id -> true
+                binding.descriptionChip.id -> true
+                binding.contentChip.id -> true
                 else -> false
             }
-        }.let {
-            NewsApiUtils.searchIn(it)
-        }
-        val domainsInc = binding.searchDomainsTextInput.editText?.text?.replace(Regex(" "), "").toString()
-        val domainsExc = binding.searchExcludeDomainsTextInput.editText?.text?.replace(Regex(" "), "").toString()
+        }.let { NewsApiUtils.searchIn(it) }
+        val domainsInc =
+            binding.searchDomainsTextInput.editText?.text
+                ?.replace(Regex(" "), "")
+                .toString()
+        val domainsExc =
+            binding.searchExcludeDomainsTextInput.editText?.text
+                ?.replace(Regex(" "), "")
+                .toString()
         val fromDate = binding.searchDateFromTextInput.editText?.text.toString()
         val toDate = binding.searchDateToTextInput.editText?.text.toString()
         val language = binding.searchLanguageDropDownTextView.text.toString()
@@ -86,7 +84,7 @@ class SearchEverythingFragment : BaseFragment() {
         }
 
         val searchModel = EverythingSearchSettingsModel(
-            keyword = queries.toString().ifEmpty { null }?.htmlEncode(),
+            keyword = queries.ifEmpty { null }?.htmlEncode(),
             searchIn = searchIn.ifEmpty { null },
             sources = null,
             domains = domainsInc.ifEmpty { null },
@@ -99,11 +97,14 @@ class SearchEverythingFragment : BaseFragment() {
             page = null
         )
 
+        parentFragmentManager.popBackStack()
         parentFragmentManager.beginTransaction()
             .replace(
                 R.id.activity_main_fragment_container,
-                ArticlesFragment.newInstance(searchModel)
-            ).commit()
+                ArticlesFragment.newInstance(searchModel),
+                ArticlesFragment.TAG
+            )
+            .commit()
     }
 
     private fun onCreateDatePicker(view: View) {

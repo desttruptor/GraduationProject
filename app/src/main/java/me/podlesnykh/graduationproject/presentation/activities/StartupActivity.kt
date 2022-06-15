@@ -12,23 +12,26 @@ import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.snackbar.Snackbar
 import me.podlesnykh.graduationproject.R
 
+/**
+ * todo add loading articles for first launch after install
+ */
 class StartupActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_startup)
 
-        if (!isNetworkAvailable()) {
-            Snackbar.make(
-                findViewById(R.id.splash_root),
-                "Network error: network unavailable",
-                3000
-            ).show()
-        } else {
+        if (isNetworkAvailable()) {
             Handler(Looper.getMainLooper()).postDelayed({
                 startActivity(Intent(this, MainActivity::class.java))
                 finish()
             }, 1000)
+        } else {
+            Snackbar.make(
+                findViewById(R.id.splash_root),
+                "Network error: network unavailable",
+                6000
+            ).show()
         }
     }
 
